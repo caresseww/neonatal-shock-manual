@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>新生儿休克与血管活性药物 · 床旁手册</title>
+<title>① 基本概念｜新生儿循环特点</title>
 <style>
   :root{
     --bg:#f5f7fa;--card:#fff;--border:#e2e8f0;--text:#1a2536;--muted:#64748b;
@@ -126,43 +126,156 @@
 </head>
 <body>
 <div class="wrap">
-<nav class="mnav"><a href="index.html" class="active">首页</a><a href="basic.html">①概念</a><a href="decide.html">②决策</a><a href="drug.html">③药物</a><a href="echo.html">④心超</a><a href="lit.html">⑤文献</a><a href="resources.html">⑥资源</a></nav>
+<nav class="mnav"><a href="index.html">首页</a><a href="basic.html" class="active">①概念</a><a href="decide.html">②决策</a><a href="drug.html">③药物</a><a href="echo.html">④心超</a><a href="lit.html">⑤文献</a><a href="resources.html">⑥资源</a></nav>
 <header>
-  <h1>新生儿休克与血管活性药物 · 床旁手册</h1>
-  <div class="sub">复旦儿科 NICU · 分区翻页版 · 微信点开即看 · 36min POCUS 视频在内 · 收藏本页当目录</div>
+  <h1>① 基本概念｜新生儿循环特点</h1>
+  <div class="sub">为什么不能照抄成人 · 休克五型因果链 · 核心数字与门槛</div>
 </header>
-<style>.toc{display:block;background:var(--pl);border:1px solid #c5d8e8;border-radius:9px;padding:11px 12px;text-decoration:none;color:var(--text);font-size:13px;line-height:1.5}.toc small{display:block;color:var(--muted);font-size:11px;margin-top:3px}.toc:active{background:#dce8f3}</style>
+
+<div id="basic" class="tab-content active">
+
   <div class="tip">
-    <b>怎么用：</b>值班遇到低血压 → 直接进 <a href="decide.html" style="color:var(--primary)"><b>② 值班决策</b></a>；想系统学 → 按①→⑥顺序；药剂量拿不准 → <a href="drug.html" style="color:var(--primary)"><b>③ 药物</b></a>药卡。每页顶部可跳转分区，页底有上一页/下一页。
-  </div>
-  <div class="card">
-    <h3>目录（六个分区）</h3>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-      <a href="basic.html" class="toc"><b>① 基本概念</b><small>循环5特点 · 休克五型 · 核心数字</small></a>
-      <a href="decide.html" class="toc"><b>② 值班决策</b><small>表型鉴别 · 心超四步 · 红旗</small></a>
-      <a href="drug.html" class="toc"><b>③ 药物</b><small>受体 · 矩阵 · 7张药卡 · 路径</small></a>
-      <a href="echo.html" class="toc"><b>④ 心超手把手</b><small>视频课 · 8切面 · 词典 · 坑</small></a>
-      <a href="lit.html" class="toc"><b>⑤ 文献速查</b><small>关键研究一句话</small></a>
-      <a href="resources.html" class="toc"><b>⑥ 学习资源</b><small>课程 · 视频 · 指南共识</small></a>
-    </div>
-  </div>
-  <div class="card">
-    <h3>核心数字（门槛，不是目标）</h3>
-    <div class="grid4">
-      <div class="num"><div class="big">MAP ≥ GA</div><div class="lbl">平均动脉压 ≥ 胎龄周数</div></div>
-      <div class="num"><div class="big" style="color:var(--red)">SVC &lt;55</div><div class="lbl">mL/kg/min = 脑灌注不足</div></div>
-      <div class="num"><div class="big" style="color:var(--red)">FS &lt;28%</div><div class="lbl">或 SAVV&lt;4.5cm = 低心排</div></div>
-      <div class="num"><div class="big" style="color:var(--red)">TR &gt;3</div><div class="lbl">m/s + D字征 = PPHN</div></div>
-    </div>
-    <div style="font-size:11.5px;color:var(--muted);text-align:center;margin-top:8px">
-      真正目标：CRT&lt;3s · 乳酸正常 · 尿量&gt;1 mL/kg/h · 四肢温暖
-    </div>
-  </div>
-  <div class="tip red">
-    <b>最重要的一句话：</b>MAP ≥ GA ≠ 灌注足够。先看流量，再看压力（Seri 2004）。
+    <b>这页为什么重要：</b>新生儿低血压不是一个病。同样 MAP 低，可能是血不够、泵没劲、血管松了、肺压堵了、血被分流偷走了——处理完全不同。先搞懂新生儿循环跟成人哪里不一样，后面看心超和选药才不会照抄 PICU 方案。
   </div>
 
-<div class="pager"><a href="index.html">← 封面<small>首页</small></a><a href="basic.html">下一页 →<small>①概念</small></a></div>
+  <div class="card">
+    <h3>新生儿循环的 5 个发育特点（为什么不能照抄成人）</h3>
+    <div class="grid2">
+      <div style="background:var(--pl);padding:14px;border-radius:8px">
+        <b style="color:var(--primary)">新生儿 / 早产儿</b>
+        <ul style="margin-left:18px;margin-top:8px;line-height:2;font-size:12.5px">
+          <li><b>未成熟心肌</b>：肌节少、β1受体少、收缩储备差，后负荷稍增 CO 即降</li>
+          <li><b>交感末梢缺如</b>：间接释放去甲肾的药（多巴胺）效果打折</li>
+          <li><b>PVR 仍高</b>：生后过渡需数天，PPHN 常见</li>
+          <li><b>PDA 开放</b>：SVR 变化直接影响左向右分流</li>
+          <li><b>HPA 轴不成熟</b>：相对肾上腺皮质功能不全常见</li>
+          <li><b>脑自主调节范围窄</b>：常压力被动，BP 低直接 = 脑灌注低</li>
+        </ul>
+      </div>
+      <div style="background:#f4f4f5;padding:14px;border-radius:8px">
+        <b style="color:var(--muted)">成人 / 儿童</b>
+        <ul style="margin-left:18px;margin-top:8px;line-height:2;font-size:12.5px">
+          <li>心肌储备充足，可耐受后负荷</li>
+          <li>交感末梢完整，间接药作用充分</li>
+          <li>PVR 低、无分流</li>
+          <li>无 PDA</li>
+          <li>肾上腺功能完整</li>
+          <li>自主调节成熟</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>休克病理生理 → 床表型：一条因果链</h3>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.6">
+      下面每一行都是一条完整因果链：<b>病因 → 哪个血流动力学变量变了 → 怎么导致临床表现 → 心超看到什么 → 为什么这么处理</b>。
+      看懂这条链，就不会"血压低就上多巴胺"。
+    </div>
+    <table>
+      <tr>
+        <th style="width:80px">类型</th>
+        <th style="width:110px">核心异常</th>
+        <th>因果链（为什么会这样）</th>
+        <th style="width:140px">心超</th>
+        <th style="width:130px">处理逻辑</th>
+      </tr>
+      <tr>
+        <td><b>低血容量</b></td>
+        <td><b>前负荷↓</b><br>（回心血少）</td>
+        <td>
+          <b>病因：</b>失血（IVH、胎盘）、第三间隙（NEC、RDS）、补液不足<br>
+          <b>→</b> 静脉回流↓ → 心室充盈↓ → SV↓（Frank-Starling）→ CO↓ → BP↓<br>
+          <b>→</b> 机体代偿：HR↑（心动过速）、SVR↑（四肢血管收缩→手脚凉、CRT↑）<br>
+          <b>→</b> 但 CO 还是不够 → 乳酸↑、尿量↓
+        </td>
+        <td>两室小、收缩期心内膜贴一起（hyperdynamic）、IVC 扁、SVC 弱</td>
+        <td><b>补前负荷</b>：10–20 mL/kg 晶体；失血→红细胞。<span style="color:var(--red)">升压药=在没血的情况下硬掐血管，器官更缺血</span></td>
+      </tr>
+      <tr>
+        <td><b>心源性</b></td>
+        <td><b>心肌收缩力↓</b><br>（泵本身没劲）</td>
+        <td>
+          <b>病因：</b>窒息后心肌顿抑、脓毒症心肌抑制、低钙/酸中毒/低糖<br>
+          <b>→</b> 心肌不能有效收缩 → SV↓ → CO↓ → BP↓<br>
+          <b>→</b> 后负荷本来就不低，再缩血管只会让泵更累<br>
+          <b>→</b> 血打不出去 → 淤在肺和肝 → 肝大、肺啰音<br>
+          <b>→</b> 低灌注 → 乳酸↑↑
+        </td>
+        <td>两室大小正常或偏大但运动弱；FS&lt;28%、SAVV&lt;4.5、Tei&gt;0.4</td>
+        <td><b>强心</b>+纠因：纠酸补钙补糖；多巴酚丁胺（直接β1）；BP同时低→肾上腺素。<span style="color:var(--red)">大剂量多巴胺=后负荷↑反伤CO</span></td>
+      </tr>
+      <tr>
+        <td><b>分布性</b><br>（血管扩张）</td>
+        <td><b>SVR↓</b><br>（血管松了）</td>
+        <td>
+          <b>病因：</b>sepsis、HIE、肾上腺皮质功能不全<br>
+          <b>→</b> 血管扩张 → 血管床容积↑ → 相对低血容量 → BP↓<br>
+          <b>→</b> 但心脏本身没事，甚至代偿性 CO↑（高动力）<br>
+          <b>→</b> 所以早期四肢<b>温暖</b>、脉压<b>宽</b>、CRT 可正常——跟低血容量完全不同<br>
+          <b>→</b> 晚期失代偿 → 心肌抑制转冷休克
+        </td>
+        <td>心功能好、FS 正常、两室大小正常；SVR 低（间接推断）</td>
+        <td><b>补 SVR</b>：多巴胺 5 μg/kg/min；无效→氢化可的松（上调α受体）；顽固→去甲肾。<span style="color:var(--red)">补液要小心——血管松不是血不够，过量会肺水肿</span></td>
+      </tr>
+      <tr>
+        <td><b>PDA 窃血</b><br>（梗阻性）</td>
+        <td><b>主动脉血→肺动脉分流</b><br>（体循环被偷走）</td>
+        <td>
+          <b>病因：</b>&lt;30周早产儿生后2–7天，导管没关<br>
+          <b>→</b> 主动脉收缩期血本来应该去全身，结果经 PDA 漏去肺循环<br>
+          <b>→</b> 体循环舒张压↓、脉压<b>宽</b>、bounding pulse<br>
+          <b>→</b> 肺循环血多 → 肺充血、啰音、呼吸机需求↑<br>
+          <b>→</b> 冠状动脉/腹腔脏器舒张期灌注↓ → 尿量少、肠缺血风险
+        </td>
+        <td>LA/AO&gt;1.3、导管直径&gt;1.5mm、左向右连续性分流、降主动脉舒张期反向血流</td>
+        <td><b>关 PDA</b>：限液80–100 mL/kg/d + 布洛芬/对乙酰氨基酚。<span style="color:var(--red)">加升压药=更多血被挤去肺里；提高SVR反而加重左向右分流</span></td>
+      </tr>
+      <tr>
+        <td><b>PPHN</b><br>（梗阻性）</td>
+        <td><b>PVR↑</b><br>（肺血管堵了）</td>
+        <td>
+          <b>病因：</b>胎粪吸入、RDS、膈疝、肺发育不良<br>
+          <b>→</b> 肺血管没扩张 → 右室打血进肺的阻力↑ → 右室压力↑<br>
+          <b>→</b> 室间隔被推向左室（D字征）→ 左室充盈受限 → CO↓<br>
+          <b>→</b> 右心血经 PDA/PFO 右向左分流 → 动脉血氧↓（中央发绀）<br>
+          <b>→</b> 导管前（右上肢）SpO₂ &gt; 导管后（下肢）差&gt;10%
+        </td>
+        <td>D字征、TR&gt;3m/s、PAP/SAP≥0.5、PDA/PFO右向左或双向分流、LPA峰值&lt;20 cm/s</td>
+        <td><b>降 PVR + 提 SVR 减少右向左分流</b>：iNO 5–20ppm + 去甲肾（α2→NO→顺便降PVR）；BP正常加米力农。<span style="color:var(--red)">米力农单独用在BP低时加重右向左分流</span></td>
+      </tr>
+    </table>
+    <div style="font-size:11.5px;color:var(--muted);margin-top:10px;line-height:1.6">
+      <b>一句话记牢：</b>低血容量=血不够→补液；心源性=泵没劲→强心；分布性=血管松→缩血管；PDA=血被偷去肺→关导管；PPHN=肺堵了→降PVR。<b>五条路，五个方向，不能走错。</b>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>核心数字（不是目标，是门槛）</h3>
+    <div class="grid4">
+      <div class="num"><div class="big">MAP ≥ GA</div><div class="lbl">MAP（平均动脉压）≥ GA（胎龄周数）<br>28周≥28 mmHg，32周≥32</div></div>
+      <div class="num"><div class="big" style="color:var(--red)">SVC &lt;55</div><div class="lbl">SVC（上腔静脉血流量）<br>mL/kg/min = 脑灌注不足</div></div>
+      <div class="num"><div class="big" style="color:var(--red)">RVO &lt;150</div><div class="lbl">RVO（右室输出量）<br>mL/kg/min = 低心排</div></div>
+      <div class="num"><div class="big" style="color:var(--red)">LPA &lt;20</div><div class="lbl">LPA（左肺动脉峰值流速）<br>cm/s = 肺血流受阻</div></div>
+    </div>
+    <div style="font-size:11.5px;color:var(--muted);text-align:center;margin-top:8px">
+      真正目标：CRT（毛细血管再充盈时间）&lt;3s · 乳酸正常 · 尿量&gt;1 mL/kg/h · 四肢温暖
+    </div>
+  </div>
+
+  <div class="tip red">
+    <b>最重要的一句话：</b>MAP ≥ GA ≠ 灌注足够。Seri 2004：ELBW 生后第一天正常 MAP 仍可伴 SVC 低流量，且与死亡/伤残相关。<b>先看流量，再看压力。</b>
+  </div>
+
+  <div class="card">
+    <h3>为什么新生儿一线是多巴胺，不是去甲肾？</h3>
+    <div style="font-size:13px;line-height:1.75">
+      成人脓毒症是<b>血管麻痹</b>——心能代偿，直接补 SVR 即可（去甲肾是成人指南一线）。<br><br>
+      新生儿是<b>多因素混合</b>，床旁分不清"心不行"还是"血管松"。<b>多巴胺兼顾 β1 强心 + α 加压</b>，是诊断不明时的合理起点；直接上去甲肾，若实际是心源性，后负荷↑让 CO 更差。<br><br>
+      <b>但不是教条：</b>PPHN 时去甲肾反而是优选（α2→NO→降 PVR）；&lt;28 周儿交感末梢缺如，肾上腺素直接激动更可靠；Garegrat 2023 RCT 显示新生儿感染休克一线去甲肾也安全。
+    </div>
+  </div>
+<div class="pager"><a href="index.html">← 上一页<small>首页</small></a><a href="decide.html">下一页 →<small>②决策</small></a></div>
 <footer>
 
 新生儿休克与血管活性药物床旁手册 · 剂量均为新生儿文献范围<br>

@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新生儿休克与血管活性药物 · 床旁整合手册</title>
+<style>
+  :root{
+    --bg:#f5f7fa;--card:#fff;--border:#e2e8f0;--text:#1a2536;--muted:#64748b;
+    --primary:#1e4d7b;--pl:#e8eff7;--red:#b33126;--rl:#fdecea;
+    --green:#1d6e3f;--gl:#e8f4ec;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.6;font-size:14px}
+  .wrap{max-width:1080px;margin:0 auto;padding:14px}
+
+  header{background:linear-gradient(135deg,#163d63,#1e4d7b);color:#fff;padding:20px 24px;border-radius:12px;margin-bottom:12px}
+  header h1{font-size:19px;font-weight:600}
+  header .sub{font-size:12px;opacity:.9;margin-top:4px}
+
+  .tabs{position:sticky;top:0;z-index:100;display:flex;gap:4px;background:var(--card);border-radius:10px;padding:5px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:14px}
+  .tab-btn{padding:9px 14px;background:none;border:none;cursor:pointer;font-size:13px;color:var(--muted);border-radius:7px;white-space:nowrap;font-weight:500;transition:all .15s}
+  .tab-btn.active{background:var(--primary);color:#fff;font-weight:600}
+  .tab-content{display:none}
+  .tab-content.active{display:block;animation:fade .2s}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px}
+  .card h3{font-size:14px;color:var(--primary);margin-bottom:10px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  @media(max-width:800px){.grid2,.grid4{grid-template-columns:1fr 1fr}}
+
+  table{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--card)}
+  th,td{padding:7px 9px;text-align:left;border-bottom:1px solid var(--border);vertical-align:top}
+  th{background:var(--primary);color:#fff;font-weight:500}
+
+  /* 决策树 */
+  .decision{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:0 2px 10px rgba(30,77,123,.06)}
+  .qnode{background:var(--primary);color:#fff;text-align:center;padding:12px;border-radius:8px;font-weight:600;font-size:14px}
+  .step{display:flex;gap:10px;align-items:flex-start;padding:8px 12px;background:var(--pl);border-radius:7px;margin:6px 0;font-size:13px}
+  .step .n{background:var(--primary);color:#fff;min-width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
+  .step b{color:var(--primary)}
+  .arrow{text-align:center;color:var(--muted);font-size:14px}
+  .branches{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+  @media(max-width:700px){.branches{grid-template-columns:1fr 1fr}}
+  .branch{border-radius:8px;padding:12px;font-size:12px;line-height:1.5;border-left:4px solid var(--primary);background:var(--pl)}
+  .branch.danger{border-left-color:var(--red);background:var(--rl)}
+  .branch b{display:block;font-size:12.5px;margin-bottom:4px}
+  .branch .treat{margin-top:6px;padding-top:6px;border-top:1px dashed rgba(0,0,0,.1);font-weight:600}
+
+  .num{text-align:center;padding:12px 8px;background:var(--card);border:1px solid var(--border);border-radius:8px}
+  .num .big{font-size:20px;font-weight:700;color:var(--primary)}
+  .num .lbl{font-size:11px;color:var(--muted);margin-top:2px}
+  .redflag{background:var(--rl);border:1px solid #e8b8b3;border-radius:8px;padding:12px 14px;margin-top:12px;font-size:12.5px}
+  .redflag b{color:var(--red)}
+
+  /* 心超切面 */
+  .view{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:12px}
+  .view-head{padding:10px 14px;background:var(--primary);color:#fff;font-weight:600;font-size:13px;display:flex;justify-content:space-between}
+  .view-head .when{font-size:11px;opacity:.85;font-weight:400}
+  .view-body{display:grid;grid-template-columns:1fr 1.2fr;gap:0}
+  @media(max-width:800px){.view-body{grid-template-columns:1fr}}
+  .view-img{padding:10px;background:#fafbfd;border-right:1px solid var(--border)}
+  .view-img img{width:100%;border-radius:6px;border:1px solid var(--border)}
+  .view-img .cap{font-size:10.5px;color:var(--muted);margin-top:4px;line-height:1.4}
+  .view-txt{padding:12px 14px;font-size:12.5px;line-height:1.7}
+  .view-txt .do{margin-top:6px;padding-top:6px;border-top:1px dashed var(--border)}
+  .view-txt .do b{color:var(--primary)}
+
+  /* 药物 */
+  .drug{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;border-left:4px solid var(--primary)}
+  .drug.press{border-left-color:var(--red)}
+  .drug.inodilator{border-left-color:#5d4480}
+  .drug.rescue{border-left-color:#a85a14}
+  .drug-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:4px}
+  .drug-name{font-size:15px;font-weight:700}
+  .drug-name .en{font-size:11px;color:var(--muted);font-weight:400;margin-left:5px}
+  .tag{font-size:10.5px;padding:2px 9px;border-radius:9px;font-weight:600;background:var(--pl);color:var(--primary)}
+  .tag.r{background:var(--rl);color:var(--red)}
+  .tag.g{background:var(--gl);color:var(--green)}
+  .tag.o{background:#fcefdc;color:#a85a14}
+  .drug-row{display:grid;grid-template-columns:56px 1fr;gap:3px 10px;font-size:12.5px;line-height:1.65;margin-top:4px}
+  .drug-row .k{color:var(--muted);font-weight:600}
+  .dose{background:var(--bg);padding:3px 8px;border-radius:4px;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;display:inline-block;margin:2px 0}
+  .pit{color:var(--red)}
+  .ev{color:var(--green);font-size:11.5px}
+
+  /* 效应矩阵 +/− */
+  .eff{width:100%;border-collapse:collapse;font-size:12px;text-align:center}
+  .eff th{background:var(--primary);color:#fff;padding:7px 5px;font-weight:500}
+  .eff td{padding:6px 5px;border-bottom:1px solid var(--border)}
+  .eff td:first-child{text-align:left;font-weight:600}
+  .eff .plus{color:var(--red);font-weight:700}
+  .eff .minus{color:var(--green);font-weight:700}
+  .eff .zero{color:var(--muted)}
+
+  /* 受体表 */
+  .receptor td:first-child{font-weight:700;color:var(--primary);white-space:nowrap}
+  .receptor .up{color:var(--red);font-weight:600}
+  .receptor .dn{color:var(--green);font-weight:600}
+
+  /* 词典 */
+  .dict .en{font-family:ui-monospace,Menlo,monospace;color:var(--primary);font-weight:600}
+  .dict th{background:var(--primary);color:#fff;padding:6px 8px;text-align:left}
+  .dict td{padding:6px 8px;border-bottom:1px solid var(--border)}
+  .dict tr.newborn td{background:var(--pl)}
+  .dict tr.adult td{background:var(--rl)}
+  .dict tr.cat td{background:#eef1f6;font-weight:700;color:var(--muted);font-size:11px}
+
+  .pit-list{font-size:13px;line-height:1.9;margin-left:20px}
+  .pit-list li{margin-bottom:4px}
+  .tip{padding:10px 14px;border-left:3px solid var(--primary);background:var(--pl);border-radius:0 6px 6px 0;font-size:12.5px;margin-bottom:10px;line-height:1.65}
+  .tip.red{border-color:var(--red);background:var(--rl)}
+  .tip.green{border-color:var(--green);background:var(--gl)}
+
+  .lit{font-size:12.5px;padding:8px 0;border-bottom:1px solid var(--border);line-height:1.6}
+  .lit:last-child{border-bottom:none}
+  .lit .who{font-weight:700;color:var(--primary)}
+  .lit .key{color:var(--red)}
+  .lit .meta{color:var(--muted);font-size:11px}
+
+  footer{text-align:center;font-size:10.5px;color:var(--muted);padding:16px}
+  @media print{.tabs{display:none}.tab-content{display:block!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>新生儿休克与血管活性药物 · 床旁整合手册</h1>
+  <div class="sub">复旦儿科 NICU · 基本概念 → 值班决策 → 药物 → 心超词典 → 文献 · 手机阅读版</div>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('basic',event)">① 基本概念</button>
+  <button class="tab-btn" onclick="showTab('decide',event)">② 值班决策</button>
+  <button class="tab-btn" onclick="showTab('drug',event)">③ 药物</button>
+  <button class="tab-btn" onclick="showTab('echo',event)">④ 心超词典+手把手</button>
+  <button class="tab-btn" onclick="showTab('lit',event)">⑤ 文献</button>
+</div>
+
+<!-- ============ ① 基本概念 ============ -->
+<div id="basic" class="tab-content active">
+
+  <div class="tip">
+    <b>这页为什么重要：</b>新生儿低血压不是一个病。同样 MAP 低，可能是血不够、泵没劲、血管松了、肺压堵了、血被分流偷走了——处理完全不同。先搞懂新生儿循环跟成人哪里不一样，后面看心超和选药才不会照抄 PICU 方案。
+  </div>
+
+  <div class="card">
+    <h3>新生儿循环的 5 个发育特点（为什么不能照抄成人）</h3>
+    <div class="grid2">
+      <div style="background:var(--pl);padding:14px;border-radius:8px">
+        <b style="color:var(--primary)">新生儿 / 早产儿</b>
+        <ul style="margin-left:18px;margin-top:8px;line-height:2;font-size:12.5px">
+          <li><b>未成熟心肌</b>：肌节少、β1受体少、收缩储备差，后负荷稍增 CO 即降</li>
+          <li><b>交感末梢缺如</b>：间接释放去甲肾的药（多巴胺）效果打折</li>
+          <li><b>PVR 仍高</b>：生后过渡需数天，PPHN 常见</li>
+          <li><b>PDA 开放</b>：SVR 变化直接影响左向右分流</li>
+          <li><b>HPA 轴不成熟</b>：相对肾上腺皮质功能不全常见</li>
+          <li><b>脑自主调节范围窄</b>：常压力被动，BP 低直接 = 脑灌注低</li>
+        </ul>
+      </div>
+      <div style="background:#f4f4f5;padding:14px;border-radius:8px">
+        <b style="color:var(--muted)">成人 / 儿童</b>
+        <ul style="margin-left:18px;margin-top:8px;line-height:2;font-size:12.5px">
+          <li>心肌储备充足，可耐受后负荷</li>
+          <li>交感末梢完整，间接药作用充分</li>
+          <li>PVR 低、无分流</li>
+          <li>无 PDA</li>
+          <li>肾上腺功能完整</li>
+          <li>自主调节成熟</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>休克病理生理 → 床表型：一条因果链</h3>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.6">
+      下面每一行都是一条完整因果链：<b>病因 → 哪个血流动力学变量变了 → 怎么导致临床表现 → 心超看到什么 → 为什么这么处理</b>。
+      看懂这条链，就不会"血压低就上多巴胺"。
+    </div>
+    <table>
+      <tr>
+        <th style="width:80px">类型</th>
+        <th style="width:110px">核心异常</th>
+        <th>因果链（为什么会这样）</th>
+        <th style="width:140px">心超</th>
+        <th style="width:130px">处理逻辑</th>
+      </tr>
+      <tr>
+        <td><b>低血容量</b></td>
+        <td><b>前负荷↓</b><br>（回心血少）</td>
+        <td>
+          <b>病因：</b>失血（IVH、胎盘）、第三间隙（NEC、RDS）、补液不足<br>
+          <b>→</b> 静脉回流↓ → 心室充盈↓ → SV↓（Frank-Starling）→ CO↓ → BP↓<br>
+          <b>→</b> 机体代偿：HR↑（心动过速）、SVR↑（四肢血管收缩→手脚凉、CRT↑）<br>
+          <b>→</b> 但 CO 还是不够 → 乳酸↑、尿量↓
+        </td>
+        <td>两室小、收缩期心内膜贴一起（hyperdynamic）、IVC 扁、SVC 弱</td>
+        <td><b>补前负荷</b>：10–20 mL/kg 晶体；失血→红细胞。<span style="color:var(--red)">升压药=在没血的情况下硬掐血管，器官更缺血</span></td>
+      </tr>
+      <tr>
+        <td><b>心源性</b></td>
+        <td><b>心肌收缩力↓</b><br>（泵本身没劲）</td>
+        <td>
+          <b>病因：</b>窒息后心肌顿抑、脓毒症心肌抑制、低钙/酸中毒/低糖<br>
+          <b>→</b> 心肌不能有效收缩 → SV↓ → CO↓ → BP↓<br>
+          <b>→</b> 后负荷本来就不低，再缩血管只会让泵更累<br>
+          <b>→</b> 血打不出去 → 淤在肺和肝 → 肝大、肺啰音<br>
+          <b>→</b> 低灌注 → 乳酸↑↑
+        </td>
+        <td>两室大小正常或偏大但运动弱；FS&lt;28%、SAVV&lt;4.5、Tei&gt;0.4</td>
+        <td><b>强心</b>+纠因：纠酸补钙补糖；多巴酚丁胺（直接β1）；BP同时低→肾上腺素。<span style="color:var(--red)">大剂量多巴胺=后负荷↑反伤CO</span></td>
+      </tr>
+      <tr>
+        <td><b>分布性</b><br>（血管扩张）</td>
+        <td><b>SVR↓</b><br>（血管松了）</td>
+        <td>
+          <b>病因：</b>sepsis、HIE、肾上腺皮质功能不全<br>
+          <b>→</b> 血管扩张 → 血管床容积↑ → 相对低血容量 → BP↓<br>
+          <b>→</b> 但心脏本身没事，甚至代偿性 CO↑（高动力）<br>
+          <b>→</b> 所以早期四肢<b>温暖</b>、脉压<b>宽</b>、CRT 可正常——跟低血容量完全不同<br>
+          <b>→</b> 晚期失代偿 → 心肌抑制转冷休克
+        </td>
+        <td>心功能好、FS 正常、两室大小正常；SVR 低（间接推断）</td>
+        <td><b>补 SVR</b>：多巴胺 5 μg/kg/min；无效→氢化可的松（上调α受体）；顽固→去甲肾。<span style="color:var(--red)">补液要小心——血管松不是血不够，过量会肺水肿</span></td>
+      </tr>
+      <tr>
+        <td><b>PDA 窃血</b><br>（梗阻性）</td>
+        <td><b>主动脉血→肺动脉分流</b><br>（体循环被偷走）</td>
+        <td>
+          <b>病因：</b>&lt;30周早产儿生后2–7天，导管没关<br>
+          <b>→</b> 主动脉收缩期血本来应该去全身，结果经 PDA 漏去肺循环<br>
+          <b>→</b> 体循环舒张压↓、脉压<b>宽</b>、bounding pulse<br>
+          <b>→</b> 肺循环血多 → 肺充血、啰音、呼吸机需求↑<br>
+          <b>→</b> 冠状动脉/腹腔脏器舒张期灌注↓ → 尿量少、肠缺血风险
+        </td>
+        <td>LA/AO&gt;1.3、导管直径&gt;1.5mm、左向右连续性分流、降主动脉舒张期反向血流</td>
+        <td><b>关 PDA</b>：限液80–100 mL/kg/d + 布洛芬/对乙酰氨基酚。<span style="color:var(--red)">加升压药=更多血被挤去肺里；提高SVR反而加重左向右分流</span></td>
+      </tr>
+      <tr>
+        <td><b>PPHN</b><br>（梗阻性）</td>
+        <td><b>PVR↑</b><br>（肺血管堵了）</td>
+        <td>
+          <b>病因：</b>胎粪吸入、RDS、膈疝、肺发育不良<br>
+          <b>→</b> 肺血管没扩张 → 右室打血进肺的阻力↑ → 右室压力↑<br>
+          <b>→</b> 室间隔被推向左室（D字征）→ 左室充盈受限 → CO↓<br>
+          <b>→</b> 右心血经 PDA/PFO 右向左分流 → 动脉血氧↓（中央发绀）<br>
+          <b>→</b> 导管前（右上肢）SpO₂ &gt; 导管后（下肢）差&gt;10%
+        </td>
+        <td>D字征、TR&gt;3m/s、PAP/SAP≥0.5、PDA/PFO右向左或双向分流、LPA峰值&lt;20 cm/s</td>
+        <td><b>降 PVR + 提 SVR 减少右向左分流</b>：iNO 5–20ppm + 去甲肾（α2→NO→顺便降PVR）；BP正常加米力农。<span style="color:var(--red)">米力农单独用在BP低时加重右向左分流</span></td>
+      </tr>
+    </table>
+    <div style="font-size:11.5px;color:var(--muted);margin-top:10px;line-height:1.6">
+      <b>一句话记牢：</b>低血容量=血不够→补液；心源性=泵没劲→强心；分布性=血管松→缩血管；PDA=血被偷去肺→关导管；PPHN=肺堵了→降PVR。<b>五条路，五个方向，不能走错。</b>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>核心数字（不是目标，是门槛）</h3>
+    <div class="grid4">
+      <div class="num"><div class="big">MAP ≥ GA</div><div class="lbl">MAP（平均动脉压）≥ GA（胎龄周数）<br>28周≥28 mmHg，32周≥32</div></div>
+      <div class="num"><div class="big" style="color:var(--red)">SVC &lt;55</div><div class="lbl">SVC（上腔静脉血流量）<br>mL/kg/min = 脑灌注不足</div></div>
+      <div class="num"><div class="big" style="color:var(--red)">RVO &lt;150</div><div class="lbl">RVO（右室输出量）<br>mL/kg/min = 低心排</div></div>
+      <div class="num"><div class="big" style="color:var(--red)">LPA &lt;20</div><div class="lbl">LPA（左肺动脉峰值流速）<br>cm/s = 肺血流受阻</div></div>
+    </div>
+    <div style="font-size:11.5px;color:var(--muted);text-align:center;margin-top:8px">
+      真正目标：CRT（毛细血管再充盈时间）&lt;3s · 乳酸正常 · 尿量&gt;1 mL/kg/h · 四肢温暖
+    </div>
+  </div>
+
+  <div class="tip red">
+    <b>最重要的一句话：</b>MAP ≥ GA ≠ 灌注足够。Seri 2004：ELBW 生后第一天正常 MAP 仍可伴 SVC 低流量，且与死亡/伤残相关。<b>先看流量，再看压力。</b>
+  </div>
+
+  <div class="card">
+    <h3>为什么新生儿一线是多巴胺，不是去甲肾？</h3>
+    <div style="font-size:13px;line-height:1.75">
+      成人脓毒症是<b>血管麻痹</b>——心能代偿，直接补 SVR 即可（去甲肾是成人指南一线）。<br><br>
+      新生儿是<b>多因素混合</b>，床旁分不清"心不行"还是"血管松"。<b>多巴胺兼顾 β1 强心 + α 加压</b>，是诊断不明时的合理起点；直接上去甲肾，若实际是心源性，后负荷↑让 CO 更差。<br><br>
+      <b>但不是教条：</b>PPHN 时去甲肾反而是优选（α2→NO→降 PVR）；&lt;28 周儿交感末梢缺如，肾上腺素直接激动更可靠；Garegrat 2023 RCT 显示新生儿感染休克一线去甲肾也安全。
+    </div>
+  </div>
+</div>
+
+<!-- ============ ② 值班决策 ============ -->
+<div id="decide" class="tab-content">
+
+  <div class="card">
+    <h3>先看病人，再看心超：四种表型临床一眼鉴别</h3>
+    <table>
+      <tr><th style="width:80px"></th><th>低血容量</th><th>心源性</th><th>分布性（早期）</th><th>PDA 窃血</th><th>PPHN</th></tr>
+      <tr><td><b>面色</b></td><td>苍白</td><td>苍白/发灰</td><td>可潮红</td><td>苍白</td><td>中央发绀</td></tr>
+      <tr><td><b>CRT</b></td><td>↑↑</td><td>↑↑</td><td>早期可正常</td><td>↑</td><td>↑</td></tr>
+      <tr><td><b>四肢温度</b></td><td>凉</td><td>凉</td><td><b>温暖（高动力）</b></td><td>凉</td><td>凉</td></tr>
+      <tr><td><b>HR</b></td><td>代偿↑</td><td>可快可慢（窒息后慢）</td><td>↑</td><td>↑</td><td>↑</td></tr>
+      <tr><td><b>脉压差</b></td><td>正常/窄</td><td>窄</td><td><b>宽</b></td><td><b>宽、bounding pulse</b></td><td>窄</td></tr>
+      <tr><td><b>SpO₂</b></td><td>正常</td><td>可低</td><td>正常</td><td>正常</td><td><b>难维持，导管前后差&gt;10%</b></td></tr>
+      <tr><td><b>尿量</b></td><td>↓↓</td><td>↓</td><td>早期可正常</td><td>↓</td><td>↓</td></tr>
+      <tr><td><b>肝脏</b></td><td>不大</td><td><b>可大</b></td><td>不大</td><td>可大</td><td>可大</td></tr>
+      <tr><td><b>乳酸</b></td><td>↑</td><td>↑↑</td><td>↑</td><td>可↑</td><td>↑</td></tr>
+      <tr style="background:#eef3f9"><td><b>心超重点看</b></td><td>两室小、收缩期闭合、SVC弱、IVC扁</td><td>FS&lt;28%、SAVV&lt;4.5cm、Tei&gt;0.4、两室运动弱</td><td>心功能好、FS正常、两室大小正常（排除PDA后才是这个）</td><td>LA/AO&gt;1.3、导管&gt;1.5mm、降主动脉舒张期反向血流</td><td>D字征、TR&gt;3m/s、PAP/SAP≥0.5、右向左分流</td></tr>
+      <tr style="background:var(--pl)"><td><b>首选</b></td><td>补液</td><td>多巴酚丁胺/肾上腺素</td><td>多巴胺→激素→去甲肾</td><td>限液+关PDA</td><td>iNO+去甲肾</td></tr>
+    </table>
+    <div style="font-size:12px;color:var(--muted);margin-top:10px;line-height:1.7;padding:10px;background:#fff8e6;border-radius:6px;border-left:3px solid #a85a14">
+      <b style="color:#a85a14">⚠ 临床只能粗筛，不能确诊：</b><br>
+      低血容量和心源性早期都<b>四肢凉+CRT↑</b>；分布性和PDA都<b>脉压宽</b>；光靠病人外表分不开。
+      下表只是帮你<b>带着问题去打心超</b>——看到四肢暖+脉压宽，重点查PDA；看到发绀+导管前后差，重点查PPHN。<b>最终诊断必须靠心超。</b>
+    </div>
+  </div>
+
+  <div class="card" style="background:var(--pl);border-color:#c5d8e8">
+    <h3 style="color:var(--primary)">口诀：看到什么 → 心超先查什么</h3>
+    <table style="font-size:12.5px">
+      <tr style="background:var(--primary);color:#fff"><th style="width:35%">临床表现</th><th style="width:30%">最可能</th><th>心超重点看</th></tr>
+      <tr>
+        <td><b>四肢凉 + CRT↑ + 苍白 + HR代偿快</b></td>
+        <td>低血容量 或 心源性</td>
+        <td>先看<b>两室大小</b>：小而收缩过度=低血容量；大小正常但运动弱=心源性。再看FS/SAVV</td>
+      </tr>
+      <tr>
+        <td><b>四肢暖 + 脉压宽 + CRT正常</b></td>
+        <td>分布性（血管扩张）</td>
+        <td>心功能应该好；如果FS好但BP低→缩血管。<b>但要先排除PDA</b>（也是脉压宽）</td>
+      </tr>
+      <tr>
+        <td><b>脉压宽 + bounding pulse + 肺充血 + 舒张压低</b></td>
+        <td>PDA 窃血</td>
+        <td>胸骨上窝彩色多普勒看导管直径；PLAX测<b>LA/AO</b>（>1.3）；降主动脉舒张期反向血流</td>
+      </tr>
+      <tr>
+        <td><b>中央发绀 + SpO₂难维持 + 导管前后差&gt;10%</b></td>
+        <td>PPHN</td>
+        <td>PSAX看<b>D字征</b>；心尖四腔打<b>TR CW</b>（>3 m/s）；PDA分流方向</td>
+      </tr>
+      <tr>
+        <td><b>肝大 + 肺啰音 + 补液后BP不升</b></td>
+        <td>心源性</td>
+        <td>PLAX测<b>FS&lt;28%</b>；心尖五腔测<b>SAVV&lt;4.5cm</b>；Tei指数</td>
+      </tr>
+      <tr>
+        <td><b>BP骤降 + 心音低 + 奇脉</b></td>
+        <td>心包填塞</td>
+        <td>剑突下四腔心看<b>心包无回声暗区 + 右房舒张期塌陷</b>→立即穿刺</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="decision">
+    <div class="qnode">MAP（平均动脉压）低于胎龄周数 / 灌注差 / CRT&gt;3s / 乳酸高</div>
+    <div class="arrow">↓</div>
+
+    <!-- 第1步 -->
+    <div class="step" style="background:var(--pl)">
+      <div class="n">1</div>
+      <div><b>剑突下四腔心</b>（探头放剑突下，声束指向左肩）<br>
+        <small>同时回答三个问题：</small></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:6px 0 0 32px">
+      <div style="background:#eef3f9;padding:8px;border-radius:6px;font-size:11.5px;border-left:3px solid var(--primary)">
+        <b>两室都很小、收缩期贴一起？</b><br>
+        → <b>低血容量</b><br>
+        直接处理：10–20 mL/kg 晶体，10–20min输完复查
+      </div>
+      <div style="background:#fdecea;padding:8px;border-radius:6px;font-size:11.5px;border-left:3px solid var(--red)">
+        <b style="color:var(--red)">心外一圈黑水（心包积液）？</b><br>
+        → <b>红旗：填塞</b><br>
+        直接处理：立即穿刺，叫会诊
+      </div>
+      <div style="background:#f5f7fa;padding:8px;border-radius:6px;font-size:11.5px;color:var(--muted)">
+        <b>都不是？</b> → 继续 ↓
+      </div>
+    </div>
+    <div class="arrow">↓ 继续</div>
+
+    <!-- 第2步 -->
+    <div class="step" style="background:var(--pl)">
+      <div class="n">2</div>
+      <div><b>PLAX 测 FS（短轴缩短率）</b><br>
+        <small>左胸骨旁3–4肋间，M模式放二尖瓣腱索水平</small></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 0 32px">
+      <div style="background:#eef3f9;padding:8px;border-radius:6px;font-size:11.5px;border-left:3px solid var(--primary)">
+        <b>FS &lt; 28%（或 SAVV &lt; 4.5 cm）？</b><br>
+        → <b>心源性/泵没劲</b><br>
+        处理：纠酸补钙补糖；多巴酚丁胺 5–10；BP同时低→肾上腺素 0.05
+      </div>
+      <div style="background:#f5f7fa;padding:8px;border-radius:6px;font-size:11.5px;color:var(--muted)">
+        <b>FS 28–38% 正常？</b> → 继续 ↓
+      </div>
+    </div>
+    <div class="arrow">↓ 继续</div>
+
+    <!-- 第3步 -->
+    <div class="step" style="background:var(--pl)">
+      <div class="n">3</div>
+      <div><b>PSAX 看室间隔形状</b><br>
+        <small>同PLAX位置转90°，LV横切面</small></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 0 32px">
+      <div style="background:#eef3f9;padding:8px;border-radius:6px;font-size:11.5px;border-left:3px solid var(--primary)">
+        <b>LV 变 D 形（D字征）？</b><br>
+        → <b>PPHN（右心被肺压堵了）</b><br>
+        继续第4步确认TR
+      </div>
+      <div style="background:#f5f7fa;padding:8px;border-radius:6px;font-size:11.5px;color:var(--muted)">
+        <b>LV 圆形、室间隔居中？</b> → 继续 ↓
+      </div>
+    </div>
+    <div class="arrow">↓ 继续</div>
+
+    <!-- 第4步 -->
+    <div class="step" style="background:var(--pl)">
+      <div class="n">4</div>
+      <div><b>LA/AO + 胸骨上窝看 PDA</b><br>
+        <small>PLAX上测LA/AO比；胸骨上窝打主动脉弓长轴+彩色多普勒</small></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 0 32px">
+      <div style="background:#eef3f9;padding:8px;border-radius:6px;font-size:11.5px;border-left:3px solid var(--primary)">
+        <b>LA/AO &gt; 1.3 或 PDA &gt;1.5mm？</b><br>
+        → <b>PDA 窃血（血被分流偷走）</b><br>
+        处理：限液80–100；布洛芬/对乙酰氨基酚；顽固BP低→去甲肾
+      </div>
+      <div style="background:#f5f7fa;padding:8px;border-radius:6px;font-size:11.5px;color:var(--muted)">
+        <b>LA/AO &lt;1.3、无大PDA？</b> → 继续 ↓
+      </div>
+    </div>
+    <div class="arrow">↓ 继续</div>
+
+    <!-- 第5步 -->
+    <div class="step" style="background:var(--pl)">
+      <div class="n">5</div>
+      <div><b>心尖四腔心打 TR 连续波（CW）</b><br>
+        <small>测三尖瓣反流峰值速度，PASP = 4v² + RAP</small></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 0 32px">
+      <div style="background:#eef3f9;padding:8px;border-radius:6px;font-size:11.5px;border-left:3px solid var(--primary)">
+        <b>TR &gt; 3 m/s + 第3步D字征？</b><br>
+        → <b>PPHN 确诊</b><br>
+        处理：iNO 5–20ppm + 去甲肾 0.05–0.5
+      </div>
+      <div style="background:#f5f7fa;padding:8px;border-radius:6px;font-size:11.5px;color:var(--muted)">
+        <b>TR &lt;2.5、心超都正常？</b><br>
+        → <b>分布性休克（血管扩张）</b>　处理：多巴胺 5 μg/kg/min 起
+      </div>
+    </div>
+  </div>
+
+  <div class="grid4" style="margin-top:14px">
+    <div class="num"><div class="big">MAP ≥ GA</div><div class="lbl">平均动脉压 ≥ 胎龄周数<br>24h 可接受下限</div></div>
+    <div class="num"><div class="big" style="color:var(--red)">SVC &lt;55</div><div class="lbl">上腔静脉血流 mL/kg/min<br>= 脑灌注不足</div></div>
+    <div class="num"><div class="big" style="color:var(--red)">FS &lt;28%</div><div class="lbl">短轴缩短率（或 SAVV&lt;4.5cm）<br>= 低心排</div></div>
+    <div class="num"><div class="big" style="color:var(--red)">TR &gt;3</div><div class="lbl">三尖瓣反流速度 m/s<br>+ D字征 = PPHN</div></div>
+  </div>
+
+  <div class="redflag">
+    <b>看到立刻叫会诊：</b>心包积液+右房塌陷 → 立即穿刺；四腔心严重不对称疑先心（HLH、TGA）；持续心律异常；图像看不清不要硬猜。
+  </div>
+
+  <div class="tip red" style="margin-top:12px">
+    <b>最常犯的错：</b>不问清楚就上多巴胺。低血容量时升压药=把血管掐死，器官更缺血；PDA 时加升压药=更多血漏到肺里。
+  </div>
+</div>
+
+<!-- ============ ③ 药物 ============ -->
+<div id="drug" class="tab-content">
+
+  <div class="card">
+    <h3>先搞懂受体（5 分钟）</h3>
+    <table class="receptor">
+      <tr><th>受体</th><th>位置</th><th>激动效应</th><th>临床意义</th></tr>
+      <tr><td>α1</td><td>全身血管平滑肌</td><td><span class="up">血管收缩 → SVR↑ BP↑</span></td><td>所有缩血管药的共同通路</td></tr>
+      <tr><td>α2</td><td>突触前 + 血管内皮</td><td>突触前负反馈；<span class="dn">内皮 α2 → NO 释放 → PVR↓</span></td><td><b>解释为什么去甲肾治 PPHN</b>——它不止升血压，还顺便降肺压</td></tr>
+      <tr><td>β1</td><td>窦房结 + 心肌</td><td><span class="up">心率↑ 收缩力↑ SV↑ CO↑</span></td><td>多巴酚丁胺/肾上腺素低剂量主要打这个</td></tr>
+      <tr><td>β2</td><td>血管/支气管平滑肌</td><td><span class="dn">血管扩张 → SVR↓；PVR↓；支气管扩张</span></td><td>肾上腺素低剂量的扩血管效应；高剂量被 α 盖过</td></tr>
+      <tr><td>DA1</td><td>肾/肠系膜血管</td><td>血管扩张</td><td><b>新生儿不存在"肾剂量多巴胺"</b>——5 μg/kg/min 已出 α 效应</td></tr>
+    </table>
+    <div class="tip" style="margin-top:8px;margin-bottom:0">
+      <b>一句话：</b>α = 掐血管升血压；β1 = 使劲泵；β2 = 松血管。剂量决定哪个占优——低剂量 β 为主，高剂量 α 为主。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>哪个药打哪个受体？（记忆图）</h3>
+    <table class="eff">
+      <tr><th>药物</th><th>α1<br>缩血管</th><th>α2<br>→NO→降PVR</th><th>β1<br>强心</th><th>β2<br>扩血管</th><th>DA1<br>肾扩管</th><th>记忆口诀</th></tr>
+      <tr><td>多巴胺 2.5–10</td><td class="plus">+</td><td class="zero">0</td><td class="plus">++</td><td class="plus">+</td><td class="plus">+</td><td>间接释放去甲肾；新生儿末梢缺如效弱</td></tr>
+      <tr><td>多巴胺 &gt;10</td><td class="plus">+++</td><td class="zero">0</td><td class="plus">+</td><td class="zero">0</td><td class="zero">0</td><td>高剂量变成纯缩血管，后负荷伤CO</td></tr>
+      <tr><td>多巴酚丁胺</td><td class="zero">0</td><td class="zero">0</td><td class="plus">+++</td><td class="plus">++</td><td class="zero">0</td><td>纯强心+轻微扩血管，BP不升</td></tr>
+      <tr><td>肾上腺素 低</td><td class="plus">+</td><td class="zero">0</td><td class="plus">+++</td><td class="plus">+++</td><td class="zero">0</td><td>低剂量=强心+扩管，CO↑↑</td></tr>
+      <tr><td>肾上腺素 高</td><td class="plus">+++</td><td class="zero">0</td><td class="plus">++</td><td class="plus">+</td><td class="zero">0</td><td>高剂量=α盖过β，缩血管为主</td></tr>
+      <tr><td>去甲肾上腺素</td><td class="plus">+++</td><td class="plus">++</td><td class="plus">+</td><td class="zero">0</td><td class="zero">0</td><td><b>唯一打α2的缩血管药→顺便降PVR=PPHN优选</b></td></tr>
+      <tr><td>米力农</td><td class="zero">0</td><td class="zero">0</td><td class="plus">++</td><td class="plus">++（PDE3抑制）</td><td class="zero">0</td><td>不打肾上腺素受体，走PDE3，强心+扩动静脉</td></tr>
+      <tr><td>加压素</td><td colspan="5" style="text-align:center">V1受体（非肾上腺素能通路）</td><td>酸中毒时儿茶酚胺失敏仍有效</td></tr>
+      <tr><td>氢化可的松</td><td colspan="5" style="text-align:center">上调α受体密度（不是直接激动）</td><td>让儿茶酚胺能起效，不直接升压</td></tr>
+    </table>
+    <div style="font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.6">
+      <b>看图记：</b>想强心→多巴酚丁胺/肾上腺素低剂量；想升血压→去甲肾/多巴胺高剂量；想同时强心+降肺压→米力农；PPHN要升血压又要降肺压→<b>只有去甲肾</b>（α2→NO）。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>效应矩阵（+++ 强升 / + 弱升 / − 弱降 / −− 强降 / 0 无变化）</h3>
+    <table class="eff">
+      <tr><th>药物</th><th>剂量 μg/kg/min</th><th>SV</th><th>HR</th><th>SVR</th><th>PVR</th><th>BP</th><th>CO</th></tr>
+      <tr><td>多巴胺 低</td><td>2.5–10</td>
+        <td class="plus">+</td><td class="plus">+</td><td class="plus">+</td><td class="zero">0</td>
+        <td class="plus">++</td><td class="plus">+</td></tr>
+      <tr><td>多巴胺 高</td><td>&gt;10</td>
+        <td class="zero">0</td><td class="plus">++</td><td class="plus">+++</td><td class="plus">+</td>
+        <td class="plus">+++</td><td class="minus">−</td></tr>
+      <tr><td>多巴酚丁胺</td><td>5–20</td>
+        <td class="plus">+++</td><td class="plus">+</td><td class="minus">−−</td><td class="zero">0</td>
+        <td class="zero">0</td><td class="plus">+++</td></tr>
+      <tr><td>肾上腺素 低</td><td>0.01–0.1</td>
+        <td class="plus">+++</td><td class="plus">+</td><td class="minus">−</td><td class="minus">−−</td>
+        <td class="zero">0</td><td class="plus">+++</td></tr>
+      <tr><td>肾上腺素 高</td><td>&gt;0.1</td>
+        <td class="plus">++</td><td class="plus">+++</td><td class="plus">+++</td><td class="plus">+</td>
+        <td class="plus">+++</td><td class="zero">0</td></tr>
+      <tr><td>去甲肾上腺素</td><td>0.05–0.5</td>
+        <td class="zero">0</td><td class="zero">0</td><td class="plus">+++</td><td class="minus">−</td>
+        <td class="plus">+++</td><td class="zero">0</td></tr>
+      <tr><td>米力农</td><td>0.25–0.75</td>
+        <td class="plus">++</td><td class="zero">0</td><td class="minus">−−</td><td class="minus">−−−</td>
+        <td class="minus">−</td><td class="plus">++</td></tr>
+      <tr><td>加压素</td><td>0.0002–0.0005 U</td>
+        <td class="zero">0</td><td class="minus">−</td><td class="plus">+++</td><td class="zero">0</td>
+        <td class="plus">+++</td><td class="zero">0</td></tr>
+      <tr><td>氢化可的松</td><td>1 mg/kg q8h</td>
+        <td class="zero">0</td><td class="zero">0</td><td class="plus">++</td><td class="zero">0</td>
+        <td class="plus">++</td><td class="zero">0</td></tr>
+    </table>
+    <div style="font-size:12px;margin-top:8px">
+      <b>选药：</b>BP低+流量高 → 多巴胺；BP正常+流量低 → 多巴酚丁胺；PPHN+BP低 → 去甲肾；PPHN+BP正常 → 米力农。
+    </div>
+  </div>
+
+  <div class="drug">
+    <div class="drug-head"><span class="drug-name">多巴胺 <span class="en">Dopamine</span></span><span class="tag g">一线</span></div>
+    <div class="drug-row"><div class="k">机制</div><div>被交感末梢摄取后<b>间接释放去甲肾</b>；早产儿末梢缺如，间接作用弱，低剂量即出 α 缩血管——<b>"肾剂量多巴胺"在新生儿不存在</b></div></div>
+    <div class="drug-row"><div class="k">剂量</div><div><span class="dose">2.5–5 起 → 每15–20min加2.5–5；常用5–10；上限20</span></div></div>
+    <div class="drug-row"><div class="k">效应</div><div>SVR↑ MAP↑（meta r=0.88）；CBF随MAP↑；轻度强心</div></div>
+    <div class="drug-row"><div class="k">证据</div><div class="ev">Pellicer 2005：≥28周多巴胺升CBV更优；Sassano-Higgins 2011：升压优于多巴酚丁胺/胶体/激素</div></div>
+    <div class="drug-row"><div class="k">坑</div><div class="pit">&gt;10后α占优，后负荷↑反伤CO；只升BP不升流量→换多巴酚丁胺；外渗坏死，首选中心静脉</div></div>
+  </div>
+
+  <div class="drug">
+    <div class="drug-head"><span class="drug-name">多巴酚丁胺 <span class="en">Dobutamine</span></span><span class="tag g">低心排首选</span></div>
+    <div class="drug-row"><div class="k">机制</div><div>直接 β1 激动，<b>不依赖交感末梢</b>；对未成熟心肌更可靠</div></div>
+    <div class="drug-row"><div class="k">剂量</div><div><span class="dose">5–10 起；常用5–20；&gt;20不增效</span></div></div>
+    <div class="drug-row"><div class="k">效应</div><div>SV↑↑ CO↑↑ SVC↑；SVR↓；<b>BP常不变——这是药，不是失败</b></div></div>
+    <div class="drug-row"><div class="k">证据</div><div class="ev">Osborn 2002 RCT：SVC血流 +9.9 vs 多巴胺 -3.2 mL/kg/min</div></div>
+    <div class="drug-row"><div class="k">坑</div><div class="pit">血管扩张性休克单用会加重低血压；BP低+流量低要联用多巴胺</div></div>
+  </div>
+
+  <div class="drug press">
+    <div class="drug-head"><span class="drug-name">肾上腺素 <span class="en">Epinephrine</span></span><span class="tag o">二线 · &lt;28周优选</span></div>
+    <div class="drug-row"><div class="k">机制</div><div>非选择性 α+β，<b>剂量决定效应</b>；不依赖交感末梢——&lt;28周者反而比多巴胺可靠</div></div>
+    <div class="drug-row"><div class="k">剂量</div><div><span class="dose">0.05 起；常用0.05–0.3；最大文献0.5–1.0</span></div></div>
+    <div class="drug-row"><div class="k">效应</div><div>低剂量：SV↑↑ PVR↓；高剂量：SVR↑↑ BP↑↑ HR↑↑；乳酸↑ 血糖↑</div></div>
+    <div class="drug-row"><div class="k">证据</div><div class="ev">Pellicer 2005：与多巴胺升压等效；&lt;28周者肾上腺素升CBV更优</div></div>
+    <div class="drug-row"><div class="k">坑</div><div class="pit">高剂量→乳酸酸中毒、高血糖、心肌缺血；低血容量未纠正前禁用</div></div>
+  </div>
+
+  <div class="drug press">
+    <div class="drug-head"><span class="drug-name">去甲肾上腺素 <span class="en">Norepinephrine</span></span><span class="tag o">二线 · PPHN/感染休克</span></div>
+    <div class="drug-row"><div class="k">机制</div><div>强效 α1+弱β1；<b>内皮α2激动→NO释放→降PVR</b>——PPHN中优于其他缩血管药</div></div>
+    <div class="drug-row"><div class="k">剂量</div><div><span class="dose">0.05 起；常用0.05–0.5（勿照抄PICU的2）</span></div></div>
+    <div class="drug-row"><div class="k">效应</div><div>SVR↑↑↑ MAP↑↑↑；HR反射性↓；PVR↓/→；CO不变</div></div>
+    <div class="drug-row"><div class="k">证据</div><div class="ev">Tourneux 2008：PPHN+iNO无反应者MAP 33→49，PAP/SAP 0.98→0.87；Garegrat 2023 RCT：一线去甲肾 vs 肾上腺素住院日6 vs 10天</div></div>
+    <div class="drug-row"><div class="k">坑</div><div class="pit">心源性休克单用→后负荷↑↑CO更差；持续高剂量→肢端/肠/肾缺血</div></div>
+  </div>
+
+  <div class="drug inodilator">
+    <div class="drug-head"><span class="drug-name">米力农 <span class="en">Milrinone</span></span><span class="tag">inodilator</span></div>
+    <div class="drug-row"><div class="k">机制</div><div>PDE3抑制→cAMP↑→<b>强心+扩体循环+扩肺循环</b>；不耗心率不耗氧</div></div>
+    <div class="drug-row"><div class="k">剂量</div><div><span class="dose">新生儿不推荐负荷量；0.25–0.5 维持，可至0.75；肾功能不全减量</span></div></div>
+    <div class="drug-row"><div class="k">效应</div><div>SV↑↑ CO↑↑；SVR↓↓ PVR↓↓；BP↓</div></div>
+    <div class="drug-row"><div class="k">证据</div><div class="ev">Bassler 2006：PPHN+iNO无反应者OI 40→28；Imam 2022 RCT：优于西地那非</div></div>
+    <div class="drug-row"><div class="k">坑</div><div class="pit"><b>BP低者禁用</b>——加重右向左分流；起效30–60min，不是急救药；AKI蓄积、血小板↓</div></div>
+  </div>
+
+  <div class="drug rescue">
+    <div class="drug-head"><span class="drug-name">血管加压素 <span class="en">Vasopressin</span></span><span class="tag r">挽救</span></div>
+    <div class="drug-row"><div class="k">机制</div><div>V1受体收缩血管，<b>非儿茶酚胺能</b>，不依赖交感末梢；酸中毒时儿茶酚胺失敏仍有效</div></div>
+    <div class="drug-row"><div class="k">剂量</div><div><span class="dose">0.0002–0.0005 U/kg/min（按U不按μg）；不弹丸</span></div></div>
+    <div class="drug-row"><div class="k">效应</div><div>SVR↑↑↑ BP↑↑↑；HR→/↓；CO→</div></div>
+    <div class="drug-row"><div class="k">证据</div><div class="ev">Rios 2015 pilot RCT：早期低血压有效率≈90%，与多巴胺相当但心动过速更少</div></div>
+    <div class="drug-row"><div class="k">坑</div><div class="pit">低钠血症；PDA左向右分流者慎用</div></div>
+  </div>
+
+  <div class="drug rescue">
+    <div class="drug-head"><span class="drug-name">氢化可的松 <span class="en">Hydrocortisone</span></span><span class="tag o">升压抵抗</span></div>
+    <div class="drug-row"><div class="k">机制</div><div><b>不是直接升压药</b>——上调α受体密度、允许儿茶酚胺发挥作用；早产儿HPA轴不成熟</div></div>
+    <div class="drug-row"><div class="k">剂量</div><div><span class="dose">1 mg/kg IV q8h（&lt;34周q12h）；3–5天渐停。Watterberg：少即是多</span></div></div>
+    <div class="drug-row"><div class="k">效应</div><div>1–2h MAP↑、儿茶酚胺需求↓</div></div>
+    <div class="drug-row"><div class="k">证据</div><div class="ev">Ng 2006 RCT：72h后更多撤药，累积量减半；Peeples 2017：<b>治疗前皮质醇&gt;15者加激素死亡OR 26.3</b></div></div>
+    <div class="drug-row"><div class="k">坑</div><div class="pit">与吲哚美辛/布洛芬合用→肠穿孔；治疗前皮质醇已高者不要加</div></div>
+  </div>
+
+  <div class="tip red">
+    <b>不要用的：</b>左西孟旦（新生儿证据极弱）、亚甲蓝（高铁血红蛋白风险）、苯肾上腺素（纯α无强心）、血管紧张素II（无新生儿数据）、大剂量多巴胺&gt;20（新生儿上限）。<b>不要照抄PICU剂量。</b>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h3>升级路径（六步）</h3>
+    <div style="font-size:13px;line-height:2">
+      <b>1.</b> 心超四步定表型，不要只看 MAP<br>
+      <b>2.</b> 纠正可逆因素：pH&lt;7.2、离子钙&lt;1.0、低糖、低温、贫血<br>
+      <b>3.</b> 试扩容仅低血容量：10 mL/kg；无改善不重复第三次<br>
+      <b>4.</b> 按表型一线药，每15–20min滴定，1h复评心超<br>
+      <b>5.</b> 阶梯升级：多巴胺&gt;10–20 → 氢化可的松 → 肾上腺素(&lt;28周)/去甲肾(PPHN) → 加压素<br>
+      <b>6.</b> 早撤：24–48h过渡完成后逐步减量
+    </div>
+  </div>
+</div>
+
+<!-- ============ ④ 心超词典+手把手 ============ -->
+<div id="echo" class="tab-content">
+
+  <div class="tip">
+    <b>打图顺序：</b>先剑突下（保命）→ 胸骨旁（PLAX→PSAX）→ 心尖（测 SAVV/TR）→ 胸骨上窝（PDA）。10 分钟出结论，不追求完美测量。
+  </div>
+
+  <div class="view">
+    <div class="view-head" style="background:#2c3e50">四个标准切面总览 + 操作视频 <span class="when">先看视频再上手</span></div>
+    <div class="view-body" style="grid-template-columns:1fr">
+      <div class="view-img" style="border-right:none">
+        <video controls preload="metadata" poster="neonatal_shock_assets/neopocus_frames.jpg" src="neonatal_shock_assets/neopocus_video.mp4" style="width:100%;display:block;border-radius:8px 8px 0 0;background:#000"></video><div style="background:#0e2a44;color:#fff;padding:9px 14px;border-radius:0 0 8px 8px;font-size:12px;line-height:1.7;text-align:center">&#9654; NeoPocusCollab《新生儿休克的床旁POCUS评估》· 36分钟 · 英文字幕（CC）<br><span style="font-size:11px;opacity:.85">上方为视频封面帧；可播放视频见同文件夹手机版HTML（电脑浏览器打开）或单独 mp4 文件，下方附时间点中文导航</span></div>
+        <div class="cap" style="text-align:center;margin-top:8px">
+          <b>新生儿休克：心源性/分布性/梗阻性的心脏 POCUS 评估</b>（NeoPocusCollab，约36分钟，英文字幕可在视频右下角CC按钮开启）。
+        </div>
+        <div style="max-width:640px;margin:12px auto 0;font-size:12px;background:var(--pl);padding:10px 14px;border-radius:8px">
+          <b style="color:var(--primary)">时间点中文导航：</b>
+          <table style="margin-top:6px;font-size:11.5px">
+            <tr><td style="width:70px"><b>0:00–3:00</b></td><td>开场介绍</td></tr>
+            <tr><td><b>4:00–8:00</b></td><td>三个标准切面：PLAX/PSAX/心尖四腔心怎么打，看什么结构</td></tr>
+            <tr><td><b>8:00–10:00</b></td><td>低灌注（hypoperfusion）的病理生理：CO=HR×SV，BP=CO×SVR</td></tr>
+            <tr><td><b>10:00–15:00</b></td><td>新生儿循环特点：心肌未成熟、自主调节、MAP与脑灌注</td></tr>
+            <tr><td><b>15:50–19:00</b></td><td>三个标准切面怎么区分休克类型</td></tr>
+            <tr><td><b>19:00–22:00</b></td><td>心源性休克：FS下降、节段运动异常、先心（主动脉缩窄/弓中断）</td></tr>
+            <tr><td><b>22:00–26:00</b></td><td>容量评估：左房大小、IVC、SVC flow</td></tr>
+            <tr><td><b>26:00–28:00</b></td><td>分布性休克：高动力、低SVR、四肢温暖</td></tr>
+            <tr><td><b>28:00–31:00</b></td><td>治疗原则：先纠正可逆因素（酸中毒/低钙/低温），再选药</td></tr>
+            <tr><td><b>32:00–36:00</b></td><td>梗阻性：PDA、PPHN、心包填塞；导管前后SpO₂差；PGE1</td></tr>
+          </table>
+        </div>
+        <img src="neonatal_shock_assets/1f8VMJZkYL.jpg" alt="four views overview" style="max-width:520px;display:block;margin:10px auto 0">
+      </div>
+    </div>
+  </div>
+
+  <!-- 8个切面手把手 -->
+  <div class="view">
+    <div class="view-head">1. 剑突下四腔心 <span class="when">第一步，先看整体</span></div>
+    <div class="view-body">
+      <div class="view-img">
+        <img src="neonatal_shock_assets/fERqysmw06.jpg" alt="4 chamber" style="margin-bottom:6px">
+        <div class="cap">四腔心解剖+超声对照。</div>
+        <img src="neonatal_shock_assets/LqDwV1nQpG.jpg" alt="hyperdynamic LV">
+        <div class="cap"><b>低血容量时：</b>LV 小而收缩过度（hyperdynamic），心内膜收缩期几乎贴一起。</div>
+      </div>
+      <div class="view-txt">
+        <b>手把手（新手按这个做）：</b>
+        <ol style="margin-left:18px;margin-top:4px;line-height:1.8;font-size:12px">
+          <li><b>开机：</b>选 Cardiac / Neonatal preset，深度调到 4–6 cm（早产）或 6–8 cm（足月）</li>
+          <li><b>探头：</b>小圆阵探头（新生儿专用），涂足量 gel，探头轻放不要压</li>
+          <li><b>位置：</b>探头横放<b>剑突下</b>（胸骨最下端下方），标记点朝<b>左肩</b></li>
+          <li><b>找图：</b>先看到肝脏（一片灰），然后轻轻向上翘探头（扇形朝心脏方向扫），等四个腔室突然出现</li>
+          <li><b>对了的标志：</b>屏幕上方看到右房右室，下方看到左房左室，室间隔在中间竖条</li>
+        </ol>
+        <div class="do">
+          <b>看到什么 → 怎么判断：</b>
+          <ul style="margin-left:16px;margin-top:4px">
+            <li>两室都小、收缩期心内膜快贴一起 → <b>低血容量</b>，去补液</li>
+            <li>右室比左室大、室间隔被推 → <b>右心压力高</b>，走 PPHN 流程</li>
+            <li>心脏外面一圈黑水 → <b>心包积液</b>，红旗，立即叫会诊</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="view">
+    <div class="view-head">2. PLAX 胸骨旁长轴 <span class="when">测 FS、LA/AO</span></div>
+    <div class="view-body">
+      <div class="view-img">
+        <img src="neonatal_shock_assets/GU6JVlQ8eD.jpg" alt="PLAX anatomy">
+        <div class="cap">PLAX：超声图（左上）+ 心脏解剖对照。RVOT→AO→LA 一线排列，MV 在中间。</div>
+      </div>
+      <div class="view-txt">
+        <b>手把手：</b>
+        <ol style="margin-left:18px;margin-top:4px;line-height:1.8;font-size:12px">
+          <li><b>位置：</b>探头放<b>左胸骨旁第 2–3 肋间</b>（乳头上方一点），标记点朝<b>右肩</b></li>
+          <li><b>找图：</b>探头轻贴胸壁，不要压；左右微微摆动，直到屏幕上看到 RVOT（流出道）→ AO（主动脉根）→ LA（左房）排成一条水平线</li>
+          <li><b>对了的标志：</b>主动脉根像一个"甜甜圈柄"在中间，二尖瓣在下方，左房在主动脉后面</li>
+        </ol>
+        <div class="do">
+          <b>怎么量 FS：</b>
+          <ul style="margin-left:16px;margin-top:4px">
+            <li>按 <b>M-mode</b> 键，把取样线（竖线）放在<b>二尖瓣腱索水平</b>（不要放乳头肌），垂直穿过室间隔和左室后壁</li>
+            <li>屏幕上出现两条波浪线 = 室间隔和左室后壁的运动轨迹</li>
+            <li>在<b>舒张末期</b>（室间隔最靠右 = 心脏最大时）量 LVIDd</li>
+            <li>在<b>收缩末期</b>（室间隔最靠左 = 心脏最小时）量 LVIDs</li>
+            <li><b>FS = (LVIDd − LVIDs) / LVIDd × 100%</b></li>
+          </ul>
+          <b>正常值：28–38%。&lt;28% = 泵没劲（心源性休克）。</b>
+        </div>
+        <div class="do">
+          <b>怎么量 LA/AO：</b>在 PLAX 2D 图上，舒张末期量主动脉根内径（AO）和左房前后径（LA），比一下。<b>&gt;1.3 = 左心被 PDA 灌大。</b>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="view">
+    <div class="view-head">3. M 模式测 FS <span class="when">怎么量</span></div>
+    <div class="view-body">
+      <div class="view-img">
+        <img src="neonatal_shock_assets/I8inYOjPUu.jpg" alt="M-mode FS">
+        <div class="cap">M 模式：LVIDd（舒张末）和 LVIDs（收缩末）。FS=(d−s)/d。</div>
+      </div>
+      <div class="view-txt">
+        <b>关键坑：</b>
+        <ul style="margin-left:18px;margin-top:4px">
+          <li>取样线必须垂直室间隔，放在<b>二尖瓣腱索水平</b>，不要放乳头肌</li>
+          <li><b>低血容量时 FS 假性正常</b>——小腔室收缩幅度看起来大，必须看 SAVV 才知道每搏量</li>
+          <li>FS 正常但 SAVV 掉了 = 心功能开始不行</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="view">
+    <div class="view-head">4. PSAX 胸骨旁短轴 <span class="when">看 D 字征</span></div>
+    <div class="view-body">
+      <div class="view-img">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+          <div>
+            <img src="neonatal_shock_assets/WnqxDrB8Wq.jpg" alt="PSAX probe">
+            <div class="cap">探头位置：探头在胸骨旁垂直于室间隔，LV横切。</div>
+          </div>
+          <div>
+            <img src="neonatal_shock_assets/C0Iwdq49iV.jpg" alt="PSAX normal">
+            <div class="cap">正常：LV圆形，RV在左包绕。</div>
+          </div>
+          <div>
+            <img src="neonatal_shock_assets/TCgVvQIQHc.jpg" alt="D sign">
+            <div class="cap">D字征：室间隔扁平=PPHN。</div>
+          </div>
+        </div>
+      </div>
+      <div class="view-txt">
+        <b>手把手：</b>
+        <ol style="margin-left:18px;margin-top:4px;line-height:1.8;font-size:12px">
+          <li><b>位置：</b>探头位置跟 PLAX 一样（左胸骨旁肋间），但<b>顺时针转 90°</b>，标记点朝<b>左肩</b></li>
+          <li><b>找图：</b>转完后 LV 从"长条"变成"圆圈"——像切面包圈一样横切左室</li>
+          <li><b>对了的标志：</b>左室在屏幕右边像个圆面包圈，右室在左边像个月牙包绕着它</li>
+        </ol>
+        <div class="do">
+          <b>看什么（不用量，看形状）：</b>
+          <ul style="margin-left:16px;margin-top:4px">
+            <li><b>正常：</b>LV 是正圆形，室间隔在中间弯向 RV（小弧线）</li>
+            <li><b>D 字征：</b>室间隔变平，LV 被压成 D 形 = 右室压力 &gt; 左室（PPHN）</li>
+            <li>整个心动周期都扁平 = 持续 PPHN；只有舒张期扁平 = 容量过负荷</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="view">
+    <div class="view-head">5. SAVV / SVC 血流 <span class="when">最可靠的每搏量</span></div>
+    <div class="view-body">
+      <div class="view-img">
+        <img src="neonatal_shock_assets/ZqRpCVGTbP.jpg" alt="apical probe" style="margin-bottom:6px">
+        <div class="cap">心尖四腔心探头位置：探头放心尖搏动处，标记点指向左腋下。</div>
+        <img src="neonatal_shock_assets/lzXYufVnGL.png" alt="SVC flow">
+        <div class="cap">SVC 血流测量。左：测直径；右：PW 频谱。SVC&gt;55 mL/kg/min。</div>
+      </div>
+      <div class="view-txt">
+        <b>手把手测 SAVV（主动脉瓣 VTI）：</b>
+        <ol style="margin-left:18px;margin-top:4px;line-height:1.8;font-size:12px">
+          <li><b>位置：</b>探头放<b>心尖搏动处</b>（左锁骨中线第 4–5 肋间），标记点朝<b>左腋下</b></li>
+          <li><b>找图：</b>心尖四腔心（四个腔室都看到），然后把探头<b>向上翘 15°</b>，露出主动脉瓣 = 心尖五腔心</li>
+          <li><b>打 PW：</b>取样容积（小门）放在<b>主动脉瓣开口处</b>（刚过瓣叶，不要在左室里）</li>
+          <li><b>包络：</b>屏幕上出现一个<b>三角形频谱</b>（收缩期向上），用 trace 功能沿三角形上缘描一圈</li>
+          <li><b>读出 VTI：</b>机器自动给一个数字，单位 cm</li>
+        </ol>
+        <div class="do">
+          <b>判断：</b>
+          <ul style="margin-left:16px;margin-top:4px">
+            <li><b>SAVV ≥ 5–6 cm</b> = 每搏量正常</li>
+            <li><b>&lt; 4.5 cm</b> = 每搏量下降（不管 FS 好不好，都是低心排）</li>
+            <li>为什么必须看这个：低血容量时 FS 假性正常，但 SAVV 已经掉了</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="view">
+    <div class="view-head">6. PDA 彩色多普勒 <span class="when">胸骨上窝</span></div>
+    <div class="view-body">
+      <div class="view-img">
+        <img src="neonatal_shock_assets/8L4DyUqxSs.jpg" alt="suprasternal annotated" style="margin-bottom:6px">
+        <div class="cap">胸骨上窝切面：主动脉弓长轴，标注升主动脉/弓/降主动脉分支。</div>
+        <img src="neonatal_shock_assets/bkx0rHF7zk.jpg" alt="PDA color">
+        <div class="cap">26 周早产儿 PDA：红色射流从主动脉射入左肺动脉。</div>
+      </div>
+      <div class="view-txt">
+        <b>看四个数：</b>
+        <ul style="margin-left:18px;margin-top:4px">
+          <li>导管直径 &gt;1.5 mm = hsPDA</li>
+          <li>左向右分流 = 肺充血、体循环窃血</li>
+          <li>右向左分流 = PPHN</li>
+          <li>降主动脉舒张期反向血流 = 严重窃血</li>
+        </ul>
+        <div class="do"><b>体位：</b>胸骨上窝，声束指向主动脉弓长轴</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="view">
+    <div class="view-head">7. TR 连续波多普勒 <span class="when">估 PASP</span></div>
+    <div class="view-body">
+      <div class="view-img">
+        <img src="neonatal_shock_assets/TsS4ZfSxyV.jpg" alt="apical 4 chamber annotated" style="margin-bottom:6px">
+        <div class="cap">心尖四腔心：从心尖打，四个腔室都看到，TR 从这里打 CW。</div>
+        <img src="neonatal_shock_assets/whPGZStIAI.jpg" alt="TR CW">
+        <div class="cap">TR CW：v=3.52 m/s，4v²≈50，加 RAP 5 ≈ PASP 55。</div>
+      </div>
+      <div class="view-txt">
+        <b>手把手测 TR 速度：</b>
+        <ol style="margin-left:18px;margin-top:4px;line-height:1.8;font-size:12px">
+          <li><b>位置：</b>心尖四腔心（同 SAVV 那个位置）</li>
+          <li><b>找 TR：</b>打开<b>彩色多普勒</b>，三尖瓣口看到蓝色（或黄色）射流 = TR</li>
+          <li><b>打 CW：</b>把连续波取样线沿着这束射流的方向放，尽量平行</li>
+          <li><b>读速度：</b>屏幕上一个抛物线波形，量峰值速度 v（m/s）</li>
+        </ol>
+        <div class="do">
+          <b>怎么算 PASP：</b><br>
+          <b>PASP = 4 × v² + RAP</b><br>
+          例：v = 3.5 m/s → 4 × 3.5² = 4 × 12.25 = 49；RAP 估 5（正常）→ PASP ≈ 54 mmHg
+          <ul style="margin-left:16px;margin-top:6px">
+            <li><b>TR &lt; 2.5–3 m/s</b> = 正常</li>
+            <li><b>TR &gt; 3 m/s + D 字征</b> = PPHN</li>
+            <li><b>PAP/SAP ≥ 0.5</b>（PASP ÷ 收缩压 ≥ 0.5）= 肺压偏高</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="view">
+    <div class="view-head">8. 心包积液（红旗）<span class="when">看到立刻穿刺</span></div>
+    <div class="view-body">
+      <div class="view-img">
+        <img src="neonatal_shock_assets/aUEMrAcD7Q.jpg" alt="pericardial effusion">
+        <div class="cap">大量心包积液（白箭头）+ 右房舒张期塌陷（红箭头）= 填塞。</div>
+      </div>
+      <div class="view-txt">
+        <b>识别要点：</b>
+        <ul style="margin-left:18px;margin-top:4px">
+          <li>心外膜和心包之间一圈无回声（黑色）暗区</li>
+          <li>右房/右室舒张期塌陷 = 填塞（不是积液量的问题，是压不住了）</li>
+          <li>心脏在积液里摆动</li>
+        </ul>
+        <div class="do" style="color:var(--red)"><b>这不是加药能解决的：</b>立即心包穿刺，叫心外科/心超会诊。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 词典 -->
+  <div class="card dict" style="margin-top:14px">
+    <h3>心超名词对照（浅蓝=新生儿必看，浅红=成人不测）</h3>
+    <table>
+      <tr><th style="width:100px">缩写</th><th style="width:150px">英文</th><th>中文 / 大白话</th><th style="width:200px">新生儿正常 vs 成人</th></tr>
+
+      <tr class="cat"><td colspan="4">▎ 切面与测量工具</td></tr>
+      <tr><td class="en">PLAX</td><td>parasternal long-axis</td><td><b>胸骨旁长轴</b>，测 FS、LA/AO</td><td>—</td></tr>
+      <tr><td class="en">PSAX</td><td>parasternal short-axis</td><td><b>胸骨旁短轴</b>，看 D 字征</td><td>—</td></tr>
+      <tr><td class="en">A4C/A5C</td><td>apical 4-/5-chamber</td><td><b>心尖四腔/五腔</b>，测 SAVV、TR</td><td>—</td></tr>
+      <tr><td class="en">PW / CW</td><td>pulsed/continuous-wave Doppler</td><td><b>脉冲/连续波多普勒</b>，PW测VTI，CW测TR速度</td><td>—</td></tr>
+
+      <tr class="cat"><td colspan="4">▎ 收缩与流量 —— 新生儿必看</td></tr>
+      <tr class="newborn"><td class="en">FS</td><td>fractional shortening</td><td><b>短轴缩短率</b>=(LVIDd−LVIDs)/LVIDd</td><td><b>新生儿 28–38%</b>；成人 25–45%。低血容量时假性正常</td></tr>
+      <tr class="newborn"><td class="en">VTI</td><td>velocity-time integral</td><td><b>速度时间积分</b>，多普勒包络下面积=一次心跳血流走的距离</td><td>SV = 瓣环面积 × VTI</td></tr>
+      <tr class="newborn"><td class="en">SAVV</td><td>aortic valve VTI</td><td><b>主动脉瓣 VTI</b>，最直接每搏量</td><td><b>新生儿 ≥5–6 cm</b>；成人 18–22 cm（差3-4倍，别套成人）</td></tr>
+      <tr class="newborn"><td class="en">RVO/LVO</td><td>right/left ventricular output</td><td><b>右/左室输出量</b>=SV×HR</td><td><b>新生儿 mL/kg/min</b>；成人 L/min/m²（单位不同）</td></tr>
+      <tr class="newborn"><td class="en">SVC flow</td><td>superior vena cava flow</td><td><b>上腔静脉血流</b>，代表脑+上半身灌注</td><td><b>新生儿 &gt;55</b>；成人不测。PDA时LVO骗人，看SVC</td></tr>
+      <tr class="adult"><td class="en">EF</td><td>ejection fraction</td><td><b>射血分数</b>（Simpson）</td><td>成人核心（&lt;55%心衰）；<b>新生儿不推荐</b>——几何不规则测不准</td></tr>
+      <tr class="adult"><td class="en">IVC 变异</td><td>IVC respiratory variation</td><td><b>下腔静脉呼吸变异度</b></td><td>成人 &gt;50%=低血容量；<b>新生儿不可靠</b>（PDA/肺/通气影响）</td></tr>
+
+      <tr class="cat"><td colspan="4">▎ 压力与分流 —— 新生儿必看</td></tr>
+      <tr class="newborn"><td class="en">TR</td><td>tricuspid regurgitation</td><td><b>三尖瓣反流</b>，速度越快右室后压越高</td><td><b>新生儿 &lt;2.5–3 m/s</b>；生后几天生理性偏高，结合D字征</td></tr>
+      <tr class="newborn"><td class="en">PASP</td><td>pulmonary artery systolic pressure</td><td><b>肺动脉收缩压</b>=4v²+RAP</td><td><b>新生儿用PAP/SAP&lt;0.5比值</b>；成人用mPAP&gt;20绝对值</td></tr>
+      <tr class="newborn"><td class="en">D-sign</td><td>D-shaped septum</td><td><b>D字征</b>，LV被压成D形=PPHN</td><td>新生儿PPHN；成人急性肺栓塞</td></tr>
+      <tr class="newborn"><td class="en">PDA</td><td>patent ductus arteriosus</td><td><b>动脉导管未闭</b></td><td>早产儿常见；成人罕见</td></tr>
+      <tr class="newborn"><td class="en">LA/AO</td><td>LA/aortic root ratio</td><td><b>左房/主动脉根比</b></td><td><b>新生儿 &lt;1.3</b>；成人不测（PDA是早产儿病）</td></tr>
+      <tr class="adult"><td class="en">E/e'</td><td>mitral/annular ratio</td><td><b>左室充盈压</b>，成人舒张功能</td><td>成人常用；<b>新生儿不测</b>——参考值未建立</td></tr>
+
+      <tr class="cat"><td colspan="4">▎ 临床</td></tr>
+      <tr><td class="en">MAP</td><td>mean arterial pressure</td><td><b>平均动脉压</b></td><td>新生儿 ≥胎龄周数；成人 ≥65</td></tr>
+      <tr><td class="en">HR</td><td>heart rate</td><td><b>心率</b></td><td>新生儿 120–160；成人 60–100</td></tr>
+      <tr><td class="en">PPHN</td><td>persistent PHN</td><td><b>新生儿持续肺动脉高压</b></td><td>新生儿特有</td></tr>
+      <tr><td class="en">iNO</td><td>inhaled nitric oxide</td><td><b>吸入NO</b>，PPHN靶向药</td><td>新生儿一线</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>推荐学习资源（课程+指南）</h3>
+    <table style="font-size:12.5px">
+      <tr><th style="width:160px">资源</th><th>内容</th><th style="width:100px">链接</th></tr>
+      <tr>
+        <td><b>NeoCardioLab</b><br>（蒙特利尔儿童医院）</td>
+        <td>最系统的新生儿 POCUS 免费课程：探头选择、每个切面怎么打、多普勒怎么放，配视频演示。从新手到进阶都有。</td>
+        <td><a href="https://www.neocardiolab.com/pocus/neonatal-pocus-curriculum/teaching-tools-by-applications/neonatal-cardiac-pocus" target="_blank">打开课程</a></td>
+      </tr>
+      <tr>
+        <td><b>YouTube: Basic Cardiac Neonatal Views</b><br>by NeoCardioLab</td>
+        <td>实际操作视频：从探头位置到每个切面怎么调，40 分钟看完。</td>
+        <td><a href="https://www.youtube.com/watch?v=yHs4d1pjdbM" target="_blank">YouTube</a></td>
+      </tr>
+      <tr>
+        <td><b>YouTube: Butterfly IQ Newborn Echo</b></td>
+        <td>用便携超声在真实新生儿身上完整打一遍：四腔心→PLAX→PSAX→胸骨上窝。</td>
+        <td><a href="https://www.youtube.com/watch?v=yp5Ndi805zc" target="_blank">YouTube</a></td>
+      </tr>
+      <tr>
+        <td><b>YouTube: Neonatal Echocardiography 频道</b></td>
+        <td>专门做新生儿功能性心超的频道，PDA、PPHN、休克评估都有系列。</td>
+        <td><a href="https://www.youtube.com/@NeonatalEchocardiography" target="_blank">频道</a></td>
+      </tr>
+      <tr>
+        <td><b>ASE 2024 指南</b><br>（美国超声心动图学会）</td>
+        <td>最新版新生儿 NICU 目标性心超 + cPOCUS 指南，权威依据。</td>
+        <td><a href="https://www.asecho.org/wp-content/uploads/2024/04/PIIS0894731723006235.pdf" target="_blank">PDF</a></td>
+      </tr>
+      <tr>
+        <td><b>中文：PDA 血流动力学评估专家共识 2025</b></td>
+        <td>中华新生儿科杂志，床旁功能性心超评估 PDA 的操作要点和参数。</td>
+        <td><a href="https://rs.yiigle.com/cmaid/1650499" target="_blank">打开</a></td>
+      </tr>
+    </table>
+    <div style="font-size:11.5px;color:var(--muted);margin-top:8px">
+      <b>建议学习路径：</b>先看 NeoCardioLab 课程建立框架 → 对着本文档的手把手步骤在模拟人/模型上练 → 看 YouTube 真实操作视频 → 上级在床旁带着打 5–10 例后再独立值班。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>高频坑</h3>
+    <ul class="pit-list">
+      <li><b>只盯血压：</b>MAP ≥ GA ≠ 灌注足够；ELBW 正常 MAP 仍可 SVC 低流量</li>
+      <li><b>"肾剂量多巴胺"：</b>新生儿 5 μg/kg/min 已出 α 效应，不存在</li>
+      <li><b>多巴酚丁胺升 BP：</b>它改流量不改压力，BP 不升但 CO 上去就是有效</li>
+      <li><b>米力农当急救药：</b>起效 30–60 min，BP 低时禁用</li>
+      <li><b>激素常规加：</b>治疗前皮质醇&gt;15 者加激素死亡 OR 26.3（Peeples 2017）</li>
+      <li><b>照搬 PICU 剂量：</b>去甲肾 0.05–0.5，不是 2</li>
+      <li><b>忽视可逆因素：</b>pH&lt;7.2、离子钙&lt;1.0、低糖、低温未纠正，药无效</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============ ⑤ 文献 ============ -->
+<div id="lit" class="tab-content">
+  <div class="card">
+    <h3>升压药选择</h3>
+    <div class="lit"><span class="who">Pellicer A, Pediatrics 2005</span> <span class="meta">59例LBW RCT</span><br><span class="key">多巴胺 vs 肾上腺素升压等效；&lt;28周者肾上腺素升CBV更优，≥28周者多巴胺更优。</span></div>
+    <div class="lit"><span class="who">Sassano-Higgins S, J Perinatol 2011</span> <span class="meta">meta</span><br>多巴胺升MAP r=0.88，优于多巴酚丁胺/胶体/激素。</div>
+    <div class="lit"><span class="who">Osborn D, J Pediatr 2002</span> <span class="meta">42例RCT</span><br>多巴酚丁胺↑SVC +9.9 vs 多巴胺 -3.2。</div>
+    <div class="lit"><span class="who">Seri I, J Pediatr 2004</span> <span class="meta">述评</span><br><span class="key">ELBW正常MAP不保证脑灌注；BP不是终点，流量才是。</span></div>
+  </div>
+  <div class="card">
+    <h3>去甲肾 / PPHN / 加压素 / 米力农</h3>
+    <div class="lit"><span class="who">Tourneux P, J Pediatr 2008</span><br>PPHN+iNO无反应：去甲肾后MAP 33→49，PAP/SAP 0.98→0.87。</div>
+    <div class="lit"><span class="who">Garegrat K, Front Pediatr 2023</span> <span class="meta">RCT</span><br>感染休克一线去甲肾 vs 肾上腺素，住院日6 vs 10天。</div>
+    <div class="lit"><span class="who">Rios DR, J Pediatr 2015</span> <span class="meta">pilot RCT</span><br>加压素 vs 多巴胺早期低血压有效率≈90%，心动过速更少。</div>
+    <div class="lit"><span class="who">Bassler D, Biol Neonate 2006</span><br>米力农 OI 40→28，但2/4严重IVH——不用负荷量。</div>
+  </div>
+  <div class="card">
+    <h3>氢化可的松</h3>
+    <div class="lit"><span class="who">Ng PC, Pediatrics 2006</span> <span class="meta">RCT</span><br>多巴胺≥10时加1 mg/kg q8h，72h后更多撤药，累积量减半。</div>
+    <div class="lit"><span class="who">Peeples ES, J Perinatol 2017</span><br><span class="key">治疗前皮质醇&gt;15者加激素死亡OR 26.3——不要常规加。</span></div>
+  </div>
+  <div class="card">
+    <h3>TNE 指导治疗</h3>
+    <div class="lit"><span class="who">Joye C, ADC FN 2024</span> <span class="meta">622例</span><br><span class="key">TNE指导：死亡aOR 0.75，7天内死亡aOR 0.54。</span></div>
+    <div class="lit"><span class="who">Giesinger RE, AJRCCM 2023</span> <span class="meta">22–26周</span><br>生后12–18h心超筛查+指导用药：无严重IVH存活OR 2.09。</div>
+  </div>
+</div>
+
+<footer>
+新生儿休克与血管活性药物床旁手册 · 剂量均为新生儿文献范围<br>手机长图版 · 2026-09-27 · 内容与网页版一致，配图已本地化保存<br>
+ASE 2024 / Rotunda (El-Khuffash) / NeoReviews PPHN / 中华2025 PDA共识
+</footer>
+
+</div>
+<script>
+function showTab(t,evt){
+  document.querySelectorAll('.tab-content').forEach(e=>e.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(e=>e.classList.remove('active'));
+  document.getElementById(t).classList.add('active');
+  evt.currentTarget.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+
+<style>
+/* ==== mobile long-image overrides ==== */
+*{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.tabs{display:none!important}
+.tab-content{display:block!important}
+body{font-size:14.5px}
+.wrap{max-width:430px;padding:10px}
+header{padding:16px;border-radius:10px}
+header h1{font-size:17px;line-height:1.45}
+header .sub{font-size:11.5px}
+.card{padding:13px;border-radius:10px}
+.decision{padding:14px;border-radius:10px}
+.grid2{grid-template-columns:1fr!important}
+.grid4{grid-template-columns:1fr 1fr!important}
+.branches{grid-template-columns:1fr!important}
+.view-body{grid-template-columns:1fr!important}
+.view-img{border-right:none;border-bottom:1px solid var(--border)}
+table{font-size:12px}
+th,td{padding:6px 7px}
+table.tight,table.tight td,table.tight th{font-size:10.5px;padding:5px 3px}
+.secbar{background:linear-gradient(135deg,#163d63,#1e4d7b);color:#fff;font-weight:700;font-size:15px;padding:11px 14px;border-radius:10px;margin:16px 0 10px}
+.mcard{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--primary);border-radius:9px;padding:10px 12px;margin:0 0 10px}
+.mcard.newborn{background:var(--pl)}
+.mcard.adult{background:var(--rl)}
+.mcard-t{font-weight:700;color:var(--primary);font-size:14px;margin-bottom:6px;padding-bottom:5px;border-bottom:1px dashed var(--border)}
+.mcard-r{display:grid;grid-template-columns:76px 1fr;gap:2px 8px;font-size:12.5px;line-height:1.6;margin:3px 0}
+.mcard-r .mk{color:var(--muted);font-weight:600;font-size:11.5px;padding-top:1px}
+.mcard-div{font-weight:700;color:var(--muted);font-size:12px;margin:12px 0 6px}
+.card,.drug,.view,.mcard,.num,.decision,.step,.redflag,.tip{break-inside:avoid}
+@media print{.wrap{max-width:100%;padding:0 2px}.card,.decision{break-inside:auto}.secbar{break-after:avoid;page-break-after:avoid}}
+</style>
+<script>
+(function(){
+  document.querySelectorAll('div[style]').forEach(function(d){
+    var st=d.getAttribute('style')||'';
+    if(st.indexOf('grid-template-columns')>=0&&(st.indexOf('1fr 1fr')>=0||st.indexOf('repeat(')>=0)) d.style.gridTemplateColumns='1fr';
+    if(st.indexOf('margin:6px 0 0 32px')>=0) d.style.margin='6px 0 0 0';
+  });
+  function shorten(k){return k.replace('（为什么会这样）','').replace('新生儿正常 vs 成人','新生儿vs成人').replace('中文 / 大白话','中文');}
+  function mkcard(title,fields,cls){
+    var c=document.createElement('div');c.className='mcard'+(cls?' '+cls:'');
+    var t=document.createElement('div');t.className='mcard-t';t.innerHTML=title;c.appendChild(t);
+    fields.forEach(function(f){
+      if(!f.v||!String(f.v).trim())return;
+      var r=document.createElement('div');r.className='mcard-r';
+      r.innerHTML='<span class="mk">'+shorten(f.k)+'</span><span class="mv">'+f.v+'</span>';
+      c.appendChild(r);
+    });
+    return c;
+  }
+  [].slice.call(document.querySelectorAll('table')).forEach(function(tb){
+    if(!tb.rows.length)return;
+    var h=tb.rows[0].cells;if(!h.length)return;
+    var key0=h[0].textContent.trim(),n=h.length;
+    if(key0===''&&n===6){ /* transposed phenotype comparison -> per-phenotype cards */
+      var wrap=document.createElement('div');
+      var labels=[].slice.call(tb.rows).slice(1).map(function(r){return r.cells[0].innerHTML;});
+      for(var j=1;j<n;j++){
+        var fields=labels.map(function(lab,i){return {k:lab,v:tb.rows[i+1].cells[j].innerHTML};});
+        wrap.appendChild(mkcard(tb.rows[0].cells[j].innerHTML,fields,''));
+      }
+      tb.parentNode.replaceChild(wrap,tb);return;
+    }
+    var doCard=(key0==='类型')||(key0==='受体')||(key0==='临床表现')||(key0==='缩写');
+    if(doCard){
+      var wrap2=document.createElement('div');
+      var heads=[].slice.call(h).map(function(c){return c.textContent.trim();});
+      [].slice.call(tb.rows).slice(1).forEach(function(r){
+        if(r.cells.length===1){var d=document.createElement('div');d.className='mcard-div';d.textContent=r.cells[0].textContent.replace('▎','').trim();wrap2.appendChild(d);return;}
+        var fields=[];for(var i2=1;i2<r.cells.length;i2++)fields.push({k:heads[i2],v:r.cells[i2].innerHTML});
+        var cls=r.classList.contains('newborn')?'newborn':(r.classList.contains('adult')?'adult':'');
+        wrap2.appendChild(mkcard(r.cells[0].innerHTML,fields,cls));
+      });
+      tb.parentNode.replaceChild(wrap2,tb);return;
+    }
+    if((key0==='药物'&&n>=7)||(key0==='资源')) tb.classList.add('tight');
+  });
+  var names={basic:'① 基本概念｜新生儿循环特点 · 休克五型',decide:'② 值班决策｜床旁鉴别 · 心超四步流程',drug:'③ 血管活性药物｜受体 · 效应矩阵 · 药卡',echo:'④ 心超手把手｜8个切面 · 名词词典 · 资源',lit:'⑤ 文献速查'};
+  document.querySelectorAll('.tab-content').forEach(function(s){
+    var b=document.createElement('div');b.className='secbar';b.textContent=names[s.id]||'';
+    s.parentNode.insertBefore(b,s);
+  });
+})();
+</script>
+</body>
+</html>

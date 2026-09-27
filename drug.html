@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>③ 血管活性药物</title>
+<style>
+  :root{
+    --bg:#f5f7fa;--card:#fff;--border:#e2e8f0;--text:#1a2536;--muted:#64748b;
+    --primary:#1e4d7b;--pl:#e8eff7;--red:#b33126;--rl:#fdecea;
+    --green:#1d6e3f;--gl:#e8f4ec;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.6;font-size:14px}
+  .wrap{max-width:1080px;margin:0 auto;padding:14px}
+
+  header{background:linear-gradient(135deg,#163d63,#1e4d7b);color:#fff;padding:20px 24px;border-radius:12px;margin-bottom:12px}
+  header h1{font-size:19px;font-weight:600}
+  header .sub{font-size:12px;opacity:.9;margin-top:4px}
+
+  .tabs{position:sticky;top:0;z-index:100;display:flex;gap:4px;background:var(--card);border-radius:10px;padding:5px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:14px}
+  .tab-btn{padding:9px 14px;background:none;border:none;cursor:pointer;font-size:13px;color:var(--muted);border-radius:7px;white-space:nowrap;font-weight:500;transition:all .15s}
+  .tab-btn.active{background:var(--primary);color:#fff;font-weight:600}
+  .tab-content{display:none}
+  .tab-content.active{display:block;animation:fade .2s}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px}
+  .card h3{font-size:14px;color:var(--primary);margin-bottom:10px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  @media(max-width:800px){.grid2,.grid4{grid-template-columns:1fr 1fr}}
+
+  table{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--card)}
+  th,td{padding:7px 9px;text-align:left;border-bottom:1px solid var(--border);vertical-align:top}
+  th{background:var(--primary);color:#fff;font-weight:500}
+
+  /* 决策树 */
+  .decision{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:0 2px 10px rgba(30,77,123,.06)}
+  .qnode{background:var(--primary);color:#fff;text-align:center;padding:12px;border-radius:8px;font-weight:600;font-size:14px}
+  .step{display:flex;gap:10px;align-items:flex-start;padding:8px 12px;background:var(--pl);border-radius:7px;margin:6px 0;font-size:13px}
+  .step .n{background:var(--primary);color:#fff;min-width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
+  .step b{color:var(--primary)}
+  .arrow{text-align:center;color:var(--muted);font-size:14px}
+  .branches{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+  @media(max-width:700px){.branches{grid-template-columns:1fr 1fr}}
+  .branch{border-radius:8px;padding:12px;font-size:12px;line-height:1.5;border-left:4px solid var(--primary);background:var(--pl)}
+  .branch.danger{border-left-color:var(--red);background:var(--rl)}
+  .branch b{display:block;font-size:12.5px;margin-bottom:4px}
+  .branch .treat{margin-top:6px;padding-top:6px;border-top:1px dashed rgba(0,0,0,.1);font-weight:600}
+
+  .num{text-align:center;padding:12px 8px;background:var(--card);border:1px solid var(--border);border-radius:8px}
+  .num .big{font-size:20px;font-weight:700;color:var(--primary)}
+  .num .lbl{font-size:11px;color:var(--muted);margin-top:2px}
+  .redflag{background:var(--rl);border:1px solid #e8b8b3;border-radius:8px;padding:12px 14px;margin-top:12px;font-size:12.5px}
+  .redflag b{color:var(--red)}
+
+  /* 心超切面 */
+  .view{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:12px}
+  .view-head{padding:10px 14px;background:var(--primary);color:#fff;font-weight:600;font-size:13px;display:flex;justify-content:space-between}
+  .view-head .when{font-size:11px;opacity:.85;font-weight:400}
+  .view-body{display:grid;grid-template-columns:1fr 1.2fr;gap:0}
+  @media(max-width:800px){.view-body{grid-template-columns:1fr}}
+  .view-img{padding:10px;background:#fafbfd;border-right:1px solid var(--border)}
+  .view-img img{width:100%;border-radius:6px;border:1px solid var(--border)}
+  .view-img .cap{font-size:10.5px;color:var(--muted);margin-top:4px;line-height:1.4}
+  .view-txt{padding:12px 14px;font-size:12.5px;line-height:1.7}
+  .view-txt .do{margin-top:6px;padding-top:6px;border-top:1px dashed var(--border)}
+  .view-txt .do b{color:var(--primary)}
+
+  /* 药物 */
+  .drug{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;border-left:4px solid var(--primary)}
+  .drug.press{border-left-color:var(--red)}
+  .drug.inodilator{border-left-color:#5d4480}
+  .drug.rescue{border-left-color:#a85a14}
+  .drug-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:4px}
+  .drug-name{font-size:15px;font-weight:700}
+  .drug-name .en{font-size:11px;color:var(--muted);font-weight:400;margin-left:5px}
+  .tag{font-size:10.5px;padding:2px 9px;border-radius:9px;font-weight:600;background:var(--pl);color:var(--primary)}
+  .tag.r{background:var(--rl);color:var(--red)}
+  .tag.g{background:var(--gl);color:var(--green)}
+  .tag.o{background:#fcefdc;color:#a85a14}
+  .drug-row{display:grid;grid-template-columns:56px 1fr;gap:3px 10px;font-size:12.5px;line-height:1.65;margin-top:4px}
+  .drug-row .k{color:var(--muted);font-weight:600}
+  .dose{background:var(--bg);padding:3px 8px;border-radius:4px;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;display:inline-block;margin:2px 0}
+  .pit{color:var(--red)}
+  .ev{color:var(--green);font-size:11.5px}
+
+  /* 效应矩阵 +/− */
+  .eff{width:100%;border-collapse:collapse;font-size:12px;text-align:center}
+  .eff th{background:var(--primary);color:#fff;padding:7px 5px;font-weight:500}
+  .eff td{padding:6px 5px;border-bottom:1px solid var(--border)}
+  .eff td:first-child{text-align:left;font-weight:600}
+  .eff .plus{color:var(--red);font-weight:700}
+  .eff .minus{color:var(--green);font-weight:700}
+  .eff .zero{color:var(--muted)}
+
+  /* 受体表 */
+  .receptor td:first-child{font-weight:700;color:var(--primary);white-space:nowrap}
+  .receptor .up{color:var(--red);font-weight:600}
+  .receptor .dn{color:var(--green);font-weight:600}
+
+  /* 词典 */
+  .dict .en{font-family:ui-monospace,Menlo,monospace;color:var(--primary);font-weight:600}
+  .dict th{background:var(--primary);color:#fff;padding:6px 8px;text-align:left}
+  .dict td{padding:6px 8px;border-bottom:1px solid var(--border)}
+  .dict tr.newborn td{background:var(--pl)}
+  .dict tr.adult td{background:var(--rl)}
+  .dict tr.cat td{background:#eef1f6;font-weight:700;color:var(--muted);font-size:11px}
+
+  .pit-list{font-size:13px;line-height:1.9;margin-left:20px}
+  .pit-list li{margin-bottom:4px}
+  .tip{padding:10px 14px;border-left:3px solid var(--primary);background:var(--pl);border-radius:0 6px 6px 0;font-size:12.5px;margin-bottom:10px;line-height:1.65}
+  .tip.red{border-color:var(--red);background:var(--rl)}
+  .tip.green{border-color:var(--green);background:var(--gl)}
+
+  .lit{font-size:12.5px;padding:8px 0;border-bottom:1px solid var(--border);line-height:1.6}
+  .lit:last-child{border-bottom:none}
+  .lit .who{font-weight:700;color:var(--primary)}
+  .lit .key{color:var(--red)}
+  .lit .meta{color:var(--muted);font-size:11px}
+
+  footer{text-align:center;font-size:10.5px;color:var(--muted);padding:16px}
+  @media print{.tabs{display:none}.tab-content{display:block!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="mnav"><a href="index.html">首页</a><a href="basic.html">①概念</a><a href="decide.html">②决策</a><a href="drug.html" class="active">③药物</a><a href="echo.html">④心超</a><a href="lit.html">⑤文献</a><a href="resources.html">⑥资源</a></nav>
+<header>
+  <h1>③ 血管活性药物</h1>
+  <div class="sub">受体 5 分钟 · 效应矩阵 · 七张药卡 · 升级路径六步</div>
+</header>
+
+<div id="drug" class="tab-content">
+
+  <div class="card">
+    <h3>先搞懂受体（5 分钟）</h3>
+    <table class="receptor">
+      <tr><th>受体</th><th>位置</th><th>激动效应</th><th>临床意义</th></tr>
+      <tr><td>α1</td><td>全身血管平滑肌</td><td><span class="up">血管收缩 → SVR↑ BP↑</span></td><td>所有缩血管药的共同通路</td></tr>
+      <tr><td>α2</td><td>突触前 + 血管内皮</td><td>突触前负反馈；<span class="dn">内皮 α2 → NO 释放 → PVR↓</span></td><td><b>解释为什么去甲肾治 PPHN</b>——它不止升血压，还顺便降肺压</td></tr>
+      <tr><td>β1</td><td>窦房结 + 心肌</td><td><span class="up">心率↑ 收缩力↑ SV↑ CO↑</span></td><td>多巴酚丁胺/肾上腺素低剂量主要打这个</td></tr>
+      <tr><td>β2</td><td>血管/支气管平滑肌</td><td><span class="dn">血管扩张 → SVR↓；PVR↓；支气管扩张</span></td><td>肾上腺素低剂量的扩血管效应；高剂量被 α 盖过</td></tr>
+      <tr><td>DA1</td><td>肾/肠系膜血管</td><td>血管扩张</td><td><b>新生儿不存在"肾剂量多巴胺"</b>——5 μg/kg/min 已出 α 效应</td></tr>
+    </table>
+    <div class="tip" style="margin-top:8px;margin-bottom:0">
+      <b>一句话：</b>α = 掐血管升血压；β1 = 使劲泵；β2 = 松血管。剂量决定哪个占优——低剂量 β 为主，高剂量 α 为主。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>哪个药打哪个受体？（记忆图）</h3>
+    <table class="eff">
+      <tr><th>药物</th><th>α1<br>缩血管</th><th>α2<br>→NO→降PVR</th><th>β1<br>强心</th><th>β2<br>扩血管</th><th>DA1<br>肾扩管</th><th>记忆口诀</th></tr>
+      <tr><td>多巴胺 2.5–10</td><td class="plus">+</td><td class="zero">0</td><td class="plus">++</td><td class="plus">+</td><td class="plus">+</td><td>间接释放去甲肾；新生儿末梢缺如效弱</td></tr>
+      <tr><td>多巴胺 &gt;10</td><td class="plus">+++</td><td class="zero">0</td><td class="plus">+</td><td class="zero">0</td><td class="zero">0</td><td>高剂量变成纯缩血管，后负荷伤CO</td></tr>
+      <tr><td>多巴酚丁胺</td><td class="zero">0</td><td class="zero">0</td><td class="plus">+++</td><td class="plus">++</td><td class="zero">0</td><td>纯强心+轻微扩血管，BP不升</td></tr>
+      <tr><td>肾上腺素 低</td><td class="plus">+</td><td class="zero">0</td><td class="plus">+++</td><td class="plus">+++</td><td class="zero">0</td><td>低剂量=强心+扩管，CO↑↑</td></tr>
+      <tr><td>肾上腺素 高</td><td class="plus">+++</td><td class="zero">0</td><td class="plus">++</td><td class="plus">+</td><td class="zero">0</td><td>高剂量=α盖过β，缩血管为主</td></tr>
+      <tr><td>去甲肾上腺素</td><td class="plus">+++</td><td class="plus">++</td><td class="plus">+</td><td class="zero">0</td><td class="zero">0</td><td><b>唯一打α2的缩血管药→顺便降PVR=PPHN优选</b></td></tr>
+      <tr><td>米力农</td><td class="zero">0</td><td class="zero">0</td><td class="plus">++</td><td class="plus">++（PDE3抑制）</td><td class="zero">0</td><td>不打肾上腺素受体，走PDE3，强心+扩动静脉</td></tr>
+      <tr><td>加压素</td><td colspan="5" style="text-align:center">V1受体（非肾上腺素能通路）</td><td>酸中毒时儿茶酚胺失敏仍有效</td></tr>
+      <tr><td>氢化可的松</td><td colspan="5" style="text-align:center">上调α受体密度（不是直接激动）</td><td>让儿茶酚胺能起效，不直接升压</td></tr>
+    </table>
+    <div style="font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.6">
+      <b>看图记：</b>想强心→多巴酚丁胺/肾上腺素低剂量；想升血压→去甲肾/多巴胺高剂量；想同时强心+降肺压→米力农；PPHN要升血压又要降肺压→<b>只有去甲肾</b>（α2→NO）。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>效应矩阵（+++ 强升 / + 弱升 / − 弱降 / −− 强降 / 0 无变化）</h3>
+    <table class="eff">
+      <tr><th>药物</th><th>剂量 μg/kg/min</th><th>SV</th><th>HR</th><th>SVR</th><th>PVR</th><th>BP</th><th>CO</th></tr>
+      <tr><td>多巴胺 低</td><td>2.5–10</td>
+        <td class="plus">+</td><td class="plus">+</td><td class="plus">+</td><td class="zero">0</td>
+        <td class="plus">++</td><td class="plus">+</td></tr>
+      <tr><td>多巴胺 高</td><td>&gt;10</td>
+        <td class="zero">0</td><td class="plus">++</td><td class="plus">+++</td><td class="plus">+</td>
+        <td class="plus">+++</td><td class="minus">−</td></tr>
+      <tr><td>多巴酚丁胺</td><td>5–20</td>
+        <td class="plus">+++</td><td class="plus">+</td><td class="minus">−−</td><td class="zero">0</td>
+        <td class="zero">0</td><td class="plus">+++</td></tr>
+      <tr><td>肾上腺素 低</td><td>0.01–0.1</td>
+        <td class="plus">+++</td><td class="plus">+</td><td class="minus">−</td><td class="minus">−−</td>
+        <td class="zero">0</td><td class="plus">+++</td></tr>
+      <tr><td>肾上腺素 高</td><td>&gt;0.1</td>
+        <td class="plus">++</td><td class="plus">+++</td><td class="plus">+++</td><td class="plus">+</td>
+        <td class="plus">+++</td><td class="zero">0</td></tr>
+      <tr><td>去甲肾上腺素</td><td>0.05–0.5</td>
+        <td class="zero">0</td><td class="zero">0</td><td class="plus">+++</td><td class="minus">−</td>
+        <td class="plus">+++</td><td class="zero">0</td></tr>
+      <tr><td>米力农</td><td>0.25–0.75</td>
+        <td class="plus">++</td><td class="zero">0</td><td class="minus">−−</td><td class="minus">−−−</td>
+        <td class="minus">−</td><td class="plus">++</td></tr>
+      <tr><td>加压素</td><td>0.0002–0.0005 U</td>
+        <td class="zero">0</td><td class="minus">−</td><td class="plus">+++</td><td class="zero">0</td>
+        <td class="plus">+++</td><td class="zero">0</td></tr>
+      <tr><td>氢化可的松</td><td>1 mg/kg q8h</td>
+        <td class="zero">0</td><td class="zero">0</td><td class="plus">++</td><td class="zero">0</td>
+        <td class="plus">++</td><td class="zero">0</td></tr>
+    </table>
+    <div style="font-size:12px;margin-top:8px">
+      <b>选药：</b>BP低+流量高 → 多巴胺；BP正常+流量低 → 多巴酚丁胺；PPHN+BP低 → 去甲肾；PPHN+BP正常 → 米力农。
+    </div>
+  </div>
+
+  <div class="drug">
+    <div class="drug-head"><span class="drug-name">多巴胺 <span class="en">Dopamine</span></span><span class="tag g">一线</span></div>
+    <div class="drug-row"><div class="k">机制</div><div>被交感末梢摄取后<b>间接释放去甲肾</b>；早产儿末梢缺如，间接作用弱，低剂量即出 α 缩血管——<b>"肾剂量多巴胺"在新生儿不存在</b></div></div>
+    <div class="drug-row"><div class="k">剂量</div><div><span class="dose">2.5–5 起 → 每15–20min加2.5–5；常用5–10；上限20</span></div></div>
+    <div class="drug-row"><div class="k">效应</div><div>SVR↑ MAP↑（meta r=0.88）；CBF随MAP↑；轻度强心</div></div>
+    <div class="drug-row"><div class="k">证据</div><div class="ev">Pellicer 2005：≥28周多巴胺升CBV更优；Sassano-Higgins 2011：升压优于多巴酚丁胺/胶体/激素</div></div>
+    <div class="drug-row"><div class="k">坑</div><div class="pit">&gt;10后α占优，后负荷↑反伤CO；只升BP不升流量→换多巴酚丁胺；外渗坏死，首选中心静脉</div></div>
+  </div>
+
+  <div class="drug">
+    <div class="drug-head"><span class="drug-name">多巴酚丁胺 <span class="en">Dobutamine</span></span><span class="tag g">低心排首选</span></div>
+    <div class="drug-row"><div class="k">机制</div><div>直接 β1 激动，<b>不依赖交感末梢</b>；对未成熟心肌更可靠</div></div>
+    <div class="drug-row"><div class="k">剂量</div><div><span class="dose">5–10 起；常用5–20；&gt;20不增效</span></div></div>
+    <div class="drug-row"><div class="k">效应</div><div>SV↑↑ CO↑↑ SVC↑；SVR↓；<b>BP常不变——这是药，不是失败</b></div></div>
+    <div class="drug-row"><div class="k">证据</div><div class="ev">Osborn 2002 RCT：SVC血流 +9.9 vs 多巴胺 -3.2 mL/kg/min</div></div>
+    <div class="drug-row"><div class="k">坑</div><div class="pit">血管扩张性休克单用会加重低血压；BP低+流量低要联用多巴胺</div></div>
+  </div>
+
+  <div class="drug press">
+    <div class="drug-head"><span class="drug-name">肾上腺素 <span class="en">Epinephrine</span></span><span class="tag o">二线 · &lt;28周优选</span></div>
+    <div class="drug-row"><div class="k">机制</div><div>非选择性 α+β，<b>剂量决定效应</b>；不依赖交感末梢——&lt;28周者反而比多巴胺可靠</div></div>
+    <div class="drug-row"><div class="k">剂量</div><div><span class="dose">0.05 起；常用0.05–0.3；最大文献0.5–1.0</span></div></div>
+    <div class="drug-row"><div class="k">效应</div><div>低剂量：SV↑↑ PVR↓；高剂量：SVR↑↑ BP↑↑ HR↑↑；乳酸↑ 血糖↑</div></div>
+    <div class="drug-row"><div class="k">证据</div><div class="ev">Pellicer 2005：与多巴胺升压等效；&lt;28周者肾上腺素升CBV更优</div></div>
+    <div class="drug-row"><div class="k">坑</div><div class="pit">高剂量→乳酸酸中毒、高血糖、心肌缺血；低血容量未纠正前禁用</div></div>
+  </div>
+
+  <div class="drug press">
+    <div class="drug-head"><span class="drug-name">去甲肾上腺素 <span class="en">Norepinephrine</span></span><span class="tag o">二线 · PPHN/感染休克</span></div>
+    <div class="drug-row"><div class="k">机制</div><div>强效 α1+弱β1；<b>内皮α2激动→NO释放→降PVR</b>——PPHN中优于其他缩血管药</div></div>
+    <div class="drug-row"><div class="k">剂量</div><div><span class="dose">0.05 起；常用0.05–0.5（勿照抄PICU的2）</span></div></div>
+    <div class="drug-row"><div class="k">效应</div><div>SVR↑↑↑ MAP↑↑↑；HR反射性↓；PVR↓/→；CO不变</div></div>
+    <div class="drug-row"><div class="k">证据</div><div class="ev">Tourneux 2008：PPHN+iNO无反应者MAP 33→49，PAP/SAP 0.98→0.87；Garegrat 2023 RCT：一线去甲肾 vs 肾上腺素住院日6 vs 10天</div></div>
+    <div class="drug-row"><div class="k">坑</div><div class="pit">心源性休克单用→后负荷↑↑CO更差；持续高剂量→肢端/肠/肾缺血</div></div>
+  </div>
+
+  <div class="drug inodilator">
+    <div class="drug-head"><span class="drug-name">米力农 <span class="en">Milrinone</span></span><span class="tag">inodilator</span></div>
+    <div class="drug-row"><div class="k">机制</div><div>PDE3抑制→cAMP↑→<b>强心+扩体循环+扩肺循环</b>；不耗心率不耗氧</div></div>
+    <div class="drug-row"><div class="k">剂量</div><div><span class="dose">新生儿不推荐负荷量；0.25–0.5 维持，可至0.75；肾功能不全减量</span></div></div>
+    <div class="drug-row"><div class="k">效应</div><div>SV↑↑ CO↑↑；SVR↓↓ PVR↓↓；BP↓</div></div>
+    <div class="drug-row"><div class="k">证据</div><div class="ev">Bassler 2006：PPHN+iNO无反应者OI 40→28；Imam 2022 RCT：优于西地那非</div></div>
+    <div class="drug-row"><div class="k">坑</div><div class="pit"><b>BP低者禁用</b>——加重右向左分流；起效30–60min，不是急救药；AKI蓄积、血小板↓</div></div>
+  </div>
+
+  <div class="drug rescue">
+    <div class="drug-head"><span class="drug-name">血管加压素 <span class="en">Vasopressin</span></span><span class="tag r">挽救</span></div>
+    <div class="drug-row"><div class="k">机制</div><div>V1受体收缩血管，<b>非儿茶酚胺能</b>，不依赖交感末梢；酸中毒时儿茶酚胺失敏仍有效</div></div>
+    <div class="drug-row"><div class="k">剂量</div><div><span class="dose">0.0002–0.0005 U/kg/min（按U不按μg）；不弹丸</span></div></div>
+    <div class="drug-row"><div class="k">效应</div><div>SVR↑↑↑ BP↑↑↑；HR→/↓；CO→</div></div>
+    <div class="drug-row"><div class="k">证据</div><div class="ev">Rios 2015 pilot RCT：早期低血压有效率≈90%，与多巴胺相当但心动过速更少</div></div>
+    <div class="drug-row"><div class="k">坑</div><div class="pit">低钠血症；PDA左向右分流者慎用</div></div>
+  </div>
+
+  <div class="drug rescue">
+    <div class="drug-head"><span class="drug-name">氢化可的松 <span class="en">Hydrocortisone</span></span><span class="tag o">升压抵抗</span></div>
+    <div class="drug-row"><div class="k">机制</div><div><b>不是直接升压药</b>——上调α受体密度、允许儿茶酚胺发挥作用；早产儿HPA轴不成熟</div></div>
+    <div class="drug-row"><div class="k">剂量</div><div><span class="dose">1 mg/kg IV q8h（&lt;34周q12h）；3–5天渐停。Watterberg：少即是多</span></div></div>
+    <div class="drug-row"><div class="k">效应</div><div>1–2h MAP↑、儿茶酚胺需求↓</div></div>
+    <div class="drug-row"><div class="k">证据</div><div class="ev">Ng 2006 RCT：72h后更多撤药，累积量减半；Peeples 2017：<b>治疗前皮质醇&gt;15者加激素死亡OR 26.3</b></div></div>
+    <div class="drug-row"><div class="k">坑</div><div class="pit">与吲哚美辛/布洛芬合用→肠穿孔；治疗前皮质醇已高者不要加</div></div>
+  </div>
+
+  <div class="tip red">
+    <b>不要用的：</b>左西孟旦（新生儿证据极弱）、亚甲蓝（高铁血红蛋白风险）、苯肾上腺素（纯α无强心）、血管紧张素II（无新生儿数据）、大剂量多巴胺&gt;20（新生儿上限）。<b>不要照抄PICU剂量。</b>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h3>升级路径（六步）</h3>
+    <div style="font-size:13px;line-height:2">
+      <b>1.</b> 心超四步定表型，不要只看 MAP<br>
+      <b>2.</b> 纠正可逆因素：pH&lt;7.2、离子钙&lt;1.0、低糖、低温、贫血<br>
+      <b>3.</b> 试扩容仅低血容量：10 mL/kg；无改善不重复第三次<br>
+      <b>4.</b> 按表型一线药，每15–20min滴定，1h复评心超<br>
+      <b>5.</b> 阶梯升级：多巴胺&gt;10–20 → 氢化可的松 → 肾上腺素(&lt;28周)/去甲肾(PPHN) → 加压素<br>
+      <b>6.</b> 早撤：24–48h过渡完成后逐步减量
+    </div>
+  </div>
+<div class="pager"><a href="decide.html">← 上一页<small>②决策</small></a><a href="echo.html">下一页 →<small>④心超</small></a></div>
+<footer>
+
+新生儿休克与血管活性药物床旁手册 · 剂量均为新生儿文献范围<br>
+ASE 2024 / Rotunda (El-Khuffash) / NeoReviews PPHN / 中华2025 PDA共识
+<br>
+分区翻页版 · 2026-09-27 · <a href="allinone.html" style="color:var(--primary)">单页完整版（长滚动）</a> · <a href="https://github.com/caresseww/neonatal-shock-manual" style="color:var(--primary)">源码</a>
+</footer>
+</div>
+
+<style>
+/* ==== shared mobile/paging overrides ==== */
+*{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.tab-content{display:block!important}
+body{font-size:14.5px}
+.wrap{max-width:640px;padding:10px}
+header{padding:16px;border-radius:10px}
+header h1{font-size:17px;line-height:1.45}
+header .sub{font-size:11.5px}
+.card{padding:13px;border-radius:10px}
+.decision{padding:14px;border-radius:10px}
+.grid2{grid-template-columns:1fr!important}
+.grid4{grid-template-columns:1fr 1fr!important}
+.branches{grid-template-columns:1fr!important}
+.view-body{grid-template-columns:1fr!important}
+.view-img{border-right:none;border-bottom:1px solid var(--border)}
+table{font-size:12px}
+th,td{padding:6px 7px}
+table.tight,table.tight td,table.tight th{font-size:10.5px;padding:5px 3px}
+.mcard{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--primary);border-radius:9px;padding:10px 12px;margin:0 0 10px}
+.mcard.newborn{background:var(--pl)}
+.mcard.adult{background:var(--rl)}
+.mcard-t{font-weight:700;color:var(--primary);font-size:14px;margin-bottom:6px;padding-bottom:5px;border-bottom:1px dashed var(--border)}
+.mcard-r{display:grid;grid-template-columns:76px 1fr;gap:2px 8px;font-size:12.5px;line-height:1.6;margin:3px 0}
+.mcard-r .mk{color:var(--muted);font-weight:600;font-size:11.5px;padding-top:1px}
+.mcard-div{font-weight:700;color:var(--muted);font-size:12px;margin:12px 0 6px}
+.mnav{position:sticky;top:0;z-index:200;display:flex;gap:4px;background:#fff;border-radius:10px;padding:5px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin:0 0 12px}
+.mnav a{flex:1;padding:9px 2px;text-align:center;text-decoration:none;font-size:11.5px;color:var(--muted);border-radius:7px;font-weight:600;white-space:nowrap}
+.mnav a.active{background:var(--primary);color:#fff}
+.pager{display:flex;gap:8px;margin:18px 0 2px}
+.pager a{flex:1;text-align:center;padding:12px 8px;background:var(--card);border:1px solid var(--border);border-radius:9px;text-decoration:none;font-size:12.5px;color:var(--primary);font-weight:600;line-height:1.4}
+.pager a small{display:block;color:var(--muted);font-weight:400;font-size:10.5px;margin-top:2px}
+.card,.drug,.view,.mcard,.num,.decision,.step,.redflag,.tip{break-inside:avoid}
+@media print{.wrap{max-width:100%;padding:0 2px}.card,.decision{break-inside:auto}.mnav,.pager{display:none}}
+</style>
+
+
+<script>
+(function(){
+  document.querySelectorAll('div[style]').forEach(function(d){
+    var st=d.getAttribute('style')||'';
+    if(st.indexOf('grid-template-columns')>=0&&(st.indexOf('1fr 1fr')>=0||st.indexOf('repeat(')>=0)) d.style.gridTemplateColumns='1fr';
+    if(st.indexOf('margin:6px 0 0 32px')>=0) d.style.margin='6px 0 0 0';
+  });
+  function shorten(k){return k.replace('（为什么会这样）','').replace('新生儿正常 vs 成人','新生儿vs成人').replace('中文 / 大白话','中文');}
+  function mkcard(title,fields,cls){
+    var c=document.createElement('div');c.className='mcard'+(cls?' '+cls:'');
+    var t=document.createElement('div');t.className='mcard-t';t.innerHTML=title;c.appendChild(t);
+    fields.forEach(function(f){
+      if(!f.v||!String(f.v).trim())return;
+      var r=document.createElement('div');r.className='mcard-r';
+      r.innerHTML='<span class="mk">'+shorten(f.k)+'</span><span class="mv">'+f.v+'</span>';
+      c.appendChild(r);
+    });
+    return c;
+  }
+  [].slice.call(document.querySelectorAll('table')).forEach(function(tb){
+    if(!tb.rows.length)return;
+    var h=tb.rows[0].cells;if(!h.length)return;
+    var key0=h[0].textContent.trim(),n=h.length;
+    if(key0===''&&n===6){
+      var wrap=document.createElement('div');
+      var labels=[].slice.call(tb.rows).slice(1).map(function(r){return r.cells[0].innerHTML;});
+      for(var j=1;j<n;j++){
+        var fields=labels.map(function(lab,i){return {k:lab,v:tb.rows[i+1].cells[j].innerHTML};});
+        wrap.appendChild(mkcard(tb.rows[0].cells[j].innerHTML,fields,''));
+      }
+      tb.parentNode.replaceChild(wrap,tb);return;
+    }
+    var doCard=(key0==='类型')||(key0==='受体')||(key0==='临床表现')||(key0==='缩写');
+    if(doCard){
+      var wrap2=document.createElement('div');
+      var heads=[].slice.call(h).map(function(c){return c.textContent.trim();});
+      [].slice.call(tb.rows).slice(1).forEach(function(r){
+        if(r.cells.length===1){var d=document.createElement('div');d.className='mcard-div';d.textContent=r.cells[0].textContent.replace('▎','').trim();wrap2.appendChild(d);return;}
+        var fields=[];for(var i2=1;i2<r.cells.length;i2++)fields.push({k:heads[i2],v:r.cells[i2].innerHTML});
+        var cls=r.classList.contains('newborn')?'newborn':(r.classList.contains('adult')?'adult':'');
+        wrap2.appendChild(mkcard(r.cells[0].innerHTML,fields,cls));
+      });
+      tb.parentNode.replaceChild(wrap2,tb);return;
+    }
+    if((key0==='药物'&&n>=7)||(key0==='资源')) tb.classList.add('tight');
+  });
+})();
+</script>
+
+</body>
+</html>

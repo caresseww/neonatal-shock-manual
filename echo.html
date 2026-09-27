@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>④ 心超手把手｜切面与词典</title>
+<style>
+  :root{
+    --bg:#f5f7fa;--card:#fff;--border:#e2e8f0;--text:#1a2536;--muted:#64748b;
+    --primary:#1e4d7b;--pl:#e8eff7;--red:#b33126;--rl:#fdecea;
+    --green:#1d6e3f;--gl:#e8f4ec;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.6;font-size:14px}
+  .wrap{max-width:1080px;margin:0 auto;padding:14px}
+
+  header{background:linear-gradient(135deg,#163d63,#1e4d7b);color:#fff;padding:20px 24px;border-radius:12px;margin-bottom:12px}
+  header h1{font-size:19px;font-weight:600}
+  header .sub{font-size:12px;opacity:.9;margin-top:4px}
+
+  .tabs{position:sticky;top:0;z-index:100;display:flex;gap:4px;background:var(--card);border-radius:10px;padding:5px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:14px}
+  .tab-btn{padding:9px 14px;background:none;border:none;cursor:pointer;font-size:13px;color:var(--muted);border-radius:7px;white-space:nowrap;font-weight:500;transition:all .15s}
+  .tab-btn.active{background:var(--primary);color:#fff;font-weight:600}
+  .tab-content{display:none}
+  .tab-content.active{display:block;animation:fade .2s}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px}
+  .card h3{font-size:14px;color:var(--primary);margin-bottom:10px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  @media(max-width:800px){.grid2,.grid4{grid-template-columns:1fr 1fr}}
+
+  table{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--card)}
+  th,td{padding:7px 9px;text-align:left;border-bottom:1px solid var(--border);vertical-align:top}
+  th{background:var(--primary);color:#fff;font-weight:500}
+
+  /* 决策树 */
+  .decision{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:0 2px 10px rgba(30,77,123,.06)}
+  .qnode{background:var(--primary);color:#fff;text-align:center;padding:12px;border-radius:8px;font-weight:600;font-size:14px}
+  .step{display:flex;gap:10px;align-items:flex-start;padding:8px 12px;background:var(--pl);border-radius:7px;margin:6px 0;font-size:13px}
+  .step .n{background:var(--primary);color:#fff;min-width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
+  .step b{color:var(--primary)}
+  .arrow{text-align:center;color:var(--muted);font-size:14px}
+  .branches{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+  @media(max-width:700px){.branches{grid-template-columns:1fr 1fr}}
+  .branch{border-radius:8px;padding:12px;font-size:12px;line-height:1.5;border-left:4px solid var(--primary);background:var(--pl)}
+  .branch.danger{border-left-color:var(--red);background:var(--rl)}
+  .branch b{display:block;font-size:12.5px;margin-bottom:4px}
+  .branch .treat{margin-top:6px;padding-top:6px;border-top:1px dashed rgba(0,0,0,.1);font-weight:600}
+
+  .num{text-align:center;padding:12px 8px;background:var(--card);border:1px solid var(--border);border-radius:8px}
+  .num .big{font-size:20px;font-weight:700;color:var(--primary)}
+  .num .lbl{font-size:11px;color:var(--muted);margin-top:2px}
+  .redflag{background:var(--rl);border:1px solid #e8b8b3;border-radius:8px;padding:12px 14px;margin-top:12px;font-size:12.5px}
+  .redflag b{color:var(--red)}
+
+  /* 心超切面 */
+  .view{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:12px}
+  .view-head{padding:10px 14px;background:var(--primary);color:#fff;font-weight:600;font-size:13px;display:flex;justify-content:space-between}
+  .view-head .when{font-size:11px;opacity:.85;font-weight:400}
+  .view-body{display:grid;grid-template-columns:1fr 1.2fr;gap:0}
+  @media(max-width:800px){.view-body{grid-template-columns:1fr}}
+  .view-img{padding:10px;background:#fafbfd;border-right:1px solid var(--border)}
+  .view-img img{width:100%;border-radius:6px;border:1px solid var(--border)}
+  .view-img .cap{font-size:10.5px;color:var(--muted);margin-top:4px;line-height:1.4}
+  .view-txt{padding:12px 14px;font-size:12.5px;line-height:1.7}
+  .view-txt .do{margin-top:6px;padding-top:6px;border-top:1px dashed var(--border)}
+  .view-txt .do b{color:var(--primary)}
+
+  /* 药物 */
+  .drug{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;border-left:4px solid var(--primary)}
+  .drug.press{border-left-color:var(--red)}
+  .drug.inodilator{border-left-color:#5d4480}
+  .drug.rescue{border-left-color:#a85a14}
+  .drug-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:4px}
+  .drug-name{font-size:15px;font-weight:700}
+  .drug-name .en{font-size:11px;color:var(--muted);font-weight:400;margin-left:5px}
+  .tag{font-size:10.5px;padding:2px 9px;border-radius:9px;font-weight:600;background:var(--pl);color:var(--primary)}
+  .tag.r{background:var(--rl);color:var(--red)}
+  .tag.g{background:var(--gl);color:var(--green)}
+  .tag.o{background:#fcefdc;color:#a85a14}
+  .drug-row{display:grid;grid-template-columns:56px 1fr;gap:3px 10px;font-size:12.5px;line-height:1.65;margin-top:4px}
+  .drug-row .k{color:var(--muted);font-weight:600}
+  .dose{background:var(--bg);padding:3px 8px;border-radius:4px;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;display:inline-block;margin:2px 0}
+  .pit{color:var(--red)}
+  .ev{color:var(--green);font-size:11.5px}
+
+  /* 效应矩阵 +/− */
+  .eff{width:100%;border-collapse:collapse;font-size:12px;text-align:center}
+  .eff th{background:var(--primary);color:#fff;padding:7px 5px;font-weight:500}
+  .eff td{padding:6px 5px;border-bottom:1px solid var(--border)}
+  .eff td:first-child{text-align:left;font-weight:600}
+  .eff .plus{color:var(--red);font-weight:700}
+  .eff .minus{color:var(--green);font-weight:700}
+  .eff .zero{color:var(--muted)}
+
+  /* 受体表 */
+  .receptor td:first-child{font-weight:700;color:var(--primary);white-space:nowrap}
+  .receptor .up{color:var(--red);font-weight:600}
+  .receptor .dn{color:var(--green);font-weight:600}
+
+  /* 词典 */
+  .dict .en{font-family:ui-monospace,Menlo,monospace;color:var(--primary);font-weight:600}
+  .dict th{background:var(--primary);color:#fff;padding:6px 8px;text-align:left}
+  .dict td{padding:6px 8px;border-bottom:1px solid var(--border)}
+  .dict tr.newborn td{background:var(--pl)}
+  .dict tr.adult td{background:var(--rl)}
+  .dict tr.cat td{background:#eef1f6;font-weight:700;color:var(--muted);font-size:11px}
+
+  .pit-list{font-size:13px;line-height:1.9;margin-left:20px}
+  .pit-list li{margin-bottom:4px}
+  .tip{padding:10px 14px;border-left:3px solid var(--primary);background:var(--pl);border-radius:0 6px 6px 0;font-size:12.5px;margin-bottom:10px;line-height:1.65}
+  .tip.red{border-color:var(--red);background:var(--rl)}
+  .tip.green{border-color:var(--green);background:var(--gl)}
+
+  .lit{font-size:12.5px;padding:8px 0;border-bottom:1px solid var(--border);line-height:1.6}
+  .lit:last-child{border-bottom:none}
+  .lit .who{font-weight:700;color:var(--primary)}
+  .lit .key{color:var(--red)}
+  .lit .meta{color:var(--muted);font-size:11px}
+
+  footer{text-align:center;font-size:10.5px;color:var(--muted);padding:16px}
+  @media print{.tabs{display:none}.tab-content{display:block!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="mnav"><a href="index.html">首页</a><a href="basic.html">①概念</a><a href="decide.html">②决策</a><a href="drug.html">③药物</a><a href="echo.html" class="active">④心超</a><a href="lit.html">⑤文献</a><a href="resources.html">⑥资源</a></nav>
+<header>
+  <h1>④ 心超手把手｜切面与词典</h1>
+  <div class="sub">视频课 · 8 个切面手把手 · 名词对照词典 · 高频坑</div>
+</header>
+
+<div id="echo" class="tab-content">
+
+  <div class="tip">
+    <b>打图顺序：</b>先剑突下（保命）→ 胸骨旁（PLAX→PSAX）→ 心尖（测 SAVV/TR）→ 胸骨上窝（PDA）。10 分钟出结论，不追求完美测量。
+  </div>
+
+  <div class="view">
+    <div class="view-head" style="background:#2c3e50">四个标准切面总览 + 操作视频 <span class="when">先看视频再上手</span></div>
+    <div class="view-body" style="grid-template-columns:1fr">
+      <div class="view-img" style="border-right:none">
+        <video controls preload="metadata" poster="neonatal_shock_assets/neopocus_frames.jpg" src="neonatal_shock_assets/neopocus_video.mp4" style="width:100%;display:block;border-radius:8px;background:#000"></video>
+        <div class="cap" style="text-align:center;margin-top:8px">
+          <b>新生儿休克：心源性/分布性/梗阻性的心脏 POCUS 评估</b>（NeoPocusCollab，约36分钟，英文字幕可在视频右下角CC按钮开启）。
+        </div>
+        <div style="max-width:640px;margin:12px auto 0;font-size:12px;background:var(--pl);padding:10px 14px;border-radius:8px">
+          <b style="color:var(--primary)">时间点中文导航：</b>
+          <table style="margin-top:6px;font-size:11.5px">
+            <tr><td style="width:70px"><b>0:00–3:00</b></td><td>开场介绍</td></tr>
+            <tr><td><b>4:00–8:00</b></td><td>三个标准切面：PLAX/PSAX/心尖四腔心怎么打，看什么结构</td></tr>
+            <tr><td><b>8:00–10:00</b></td><td>低灌注（hypoperfusion）的病理生理：CO=HR×SV，BP=CO×SVR</td></tr>
+            <tr><td><b>10:00–15:00</b></td><td>新生儿循环特点：心肌未成熟、自主调节、MAP与脑灌注</td></tr>
+            <tr><td><b>15:50–19:00</b></td><td>三个标准切面怎么区分休克类型</td></tr>
+            <tr><td><b>19:00–22:00</b></td><td>心源性休克：FS下降、节段运动异常、先心（主动脉缩窄/弓中断）</td></tr>
+            <tr><td><b>22:00–26:00</b></td><td>容量评估：左房大小、IVC、SVC flow</td></tr>
+            <tr><td><b>26:00–28:00</b></td><td>分布性休克：高动力、低SVR、四肢温暖</td></tr>
+            <tr><td><b>28:00–31:00</b></td><td>治疗原则：先纠正可逆因素（酸中毒/低钙/低温），再选药</td></tr>
+            <tr><td><b>32:00–36:00</b></td><td>梗阻性：PDA、PPHN、心包填塞；导管前后SpO₂差；PGE1</td></tr>
+          </table>
+        </div>
+        <img src="neonatal_shock_assets/1f8VMJZkYL.jpg" alt="four views overview" style="max-width:520px;display:block;margin:10px auto 0">
+      </div>
+    </div>
+  </div>
+
+  <!-- 8个切面手把手 -->
+  <div class="view">
+    <div class="view-head">1. 剑突下四腔心 <span class="when">第一步，先看整体</span></div>
+    <div class="view-body">
+      <div class="view-img">
+        <img src="neonatal_shock_assets/fERqysmw06.jpg" alt="4 chamber" style="margin-bottom:6px">
+        <div class="cap">四腔心解剖+超声对照。</div>
+        <img src="neonatal_shock_assets/LqDwV1nQpG.jpg" alt="hyperdynamic LV">
+        <div class="cap"><b>低血容量时：</b>LV 小而收缩过度（hyperdynamic），心内膜收缩期几乎贴一起。</div>
+      </div>
+      <div class="view-txt">
+        <b>手把手（新手按这个做）：</b>
+        <ol style="margin-left:18px;margin-top:4px;line-height:1.8;font-size:12px">
+          <li><b>开机：</b>选 Cardiac / Neonatal preset，深度调到 4–6 cm（早产）或 6–8 cm（足月）</li>
+          <li><b>探头：</b>小圆阵探头（新生儿专用），涂足量 gel，探头轻放不要压</li>
+          <li><b>位置：</b>探头横放<b>剑突下</b>（胸骨最下端下方），标记点朝<b>左肩</b></li>
+          <li><b>找图：</b>先看到肝脏（一片灰），然后轻轻向上翘探头（扇形朝心脏方向扫），等四个腔室突然出现</li>
+          <li><b>对了的标志：</b>屏幕上方看到右房右室，下方看到左房左室，室间隔在中间竖条</li>
+        </ol>
+        <div class="do">
+          <b>看到什么 → 怎么判断：</b>
+          <ul style="margin-left:16px;margin-top:4px">
+            <li>两室都小、收缩期心内膜快贴一起 → <b>低血容量</b>，去补液</li>
+            <li>右室比左室大、室间隔被推 → <b>右心压力高</b>，走 PPHN 流程</li>
+            <li>心脏外面一圈黑水 → <b>心包积液</b>，红旗，立即叫会诊</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="view">
+    <div class="view-head">2. PLAX 胸骨旁长轴 <span class="when">测 FS、LA/AO</span></div>
+    <div class="view-body">
+      <div class="view-img">
+        <img src="neonatal_shock_assets/GU6JVlQ8eD.jpg" alt="PLAX anatomy">
+        <div class="cap">PLAX：超声图（左上）+ 心脏解剖对照。RVOT→AO→LA 一线排列，MV 在中间。</div>
+      </div>
+      <div class="view-txt">
+        <b>手把手：</b>
+        <ol style="margin-left:18px;margin-top:4px;line-height:1.8;font-size:12px">
+          <li><b>位置：</b>探头放<b>左胸骨旁第 2–3 肋间</b>（乳头上方一点），标记点朝<b>右肩</b></li>
+          <li><b>找图：</b>探头轻贴胸壁，不要压；左右微微摆动，直到屏幕上看到 RVOT（流出道）→ AO（主动脉根）→ LA（左房）排成一条水平线</li>
+          <li><b>对了的标志：</b>主动脉根像一个"甜甜圈柄"在中间，二尖瓣在下方，左房在主动脉后面</li>
+        </ol>
+        <div class="do">
+          <b>怎么量 FS：</b>
+          <ul style="margin-left:16px;margin-top:4px">
+            <li>按 <b>M-mode</b> 键，把取样线（竖线）放在<b>二尖瓣腱索水平</b>（不要放乳头肌），垂直穿过室间隔和左室后壁</li>
+            <li>屏幕上出现两条波浪线 = 室间隔和左室后壁的运动轨迹</li>
+            <li>在<b>舒张末期</b>（室间隔最靠右 = 心脏最大时）量 LVIDd</li>
+            <li>在<b>收缩末期</b>（室间隔最靠左 = 心脏最小时）量 LVIDs</li>
+            <li><b>FS = (LVIDd − LVIDs) / LVIDd × 100%</b></li>
+          </ul>
+          <b>正常值：28–38%。&lt;28% = 泵没劲（心源性休克）。</b>
+        </div>
+        <div class="do">
+          <b>怎么量 LA/AO：</b>在 PLAX 2D 图上，舒张末期量主动脉根内径（AO）和左房前后径（LA），比一下。<b>&gt;1.3 = 左心被 PDA 灌大。</b>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="view">
+    <div class="view-head">3. M 模式测 FS <span class="when">怎么量</span></div>
+    <div class="view-body">
+      <div class="view-img">
+        <img src="neonatal_shock_assets/I8inYOjPUu.jpg" alt="M-mode FS">
+        <div class="cap">M 模式：LVIDd（舒张末）和 LVIDs（收缩末）。FS=(d−s)/d。</div>
+      </div>
+      <div class="view-txt">
+        <b>关键坑：</b>
+        <ul style="margin-left:18px;margin-top:4px">
+          <li>取样线必须垂直室间隔，放在<b>二尖瓣腱索水平</b>，不要放乳头肌</li>
+          <li><b>低血容量时 FS 假性正常</b>——小腔室收缩幅度看起来大，必须看 SAVV 才知道每搏量</li>
+          <li>FS 正常但 SAVV 掉了 = 心功能开始不行</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="view">
+    <div class="view-head">4. PSAX 胸骨旁短轴 <span class="when">看 D 字征</span></div>
+    <div class="view-body">
+      <div class="view-img">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+          <div>
+            <img src="neonatal_shock_assets/WnqxDrB8Wq.jpg" alt="PSAX probe">
+            <div class="cap">探头位置：探头在胸骨旁垂直于室间隔，LV横切。</div>
+          </div>
+          <div>
+            <img src="neonatal_shock_assets/C0Iwdq49iV.jpg" alt="PSAX normal">
+            <div class="cap">正常：LV圆形，RV在左包绕。</div>
+          </div>
+          <div>
+            <img src="neonatal_shock_assets/TCgVvQIQHc.jpg" alt="D sign">
+            <div class="cap">D字征：室间隔扁平=PPHN。</div>
+          </div>
+        </div>
+      </div>
+      <div class="view-txt">
+        <b>手把手：</b>
+        <ol style="margin-left:18px;margin-top:4px;line-height:1.8;font-size:12px">
+          <li><b>位置：</b>探头位置跟 PLAX 一样（左胸骨旁肋间），但<b>顺时针转 90°</b>，标记点朝<b>左肩</b></li>
+          <li><b>找图：</b>转完后 LV 从"长条"变成"圆圈"——像切面包圈一样横切左室</li>
+          <li><b>对了的标志：</b>左室在屏幕右边像个圆面包圈，右室在左边像个月牙包绕着它</li>
+        </ol>
+        <div class="do">
+          <b>看什么（不用量，看形状）：</b>
+          <ul style="margin-left:16px;margin-top:4px">
+            <li><b>正常：</b>LV 是正圆形，室间隔在中间弯向 RV（小弧线）</li>
+            <li><b>D 字征：</b>室间隔变平，LV 被压成 D 形 = 右室压力 &gt; 左室（PPHN）</li>
+            <li>整个心动周期都扁平 = 持续 PPHN；只有舒张期扁平 = 容量过负荷</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="view">
+    <div class="view-head">5. SAVV / SVC 血流 <span class="when">最可靠的每搏量</span></div>
+    <div class="view-body">
+      <div class="view-img">
+        <img src="neonatal_shock_assets/ZqRpCVGTbP.jpg" alt="apical probe" style="margin-bottom:6px">
+        <div class="cap">心尖四腔心探头位置：探头放心尖搏动处，标记点指向左腋下。</div>
+        <img src="neonatal_shock_assets/lzXYufVnGL.png" alt="SVC flow">
+        <div class="cap">SVC 血流测量。左：测直径；右：PW 频谱。SVC&gt;55 mL/kg/min。</div>
+      </div>
+      <div class="view-txt">
+        <b>手把手测 SAVV（主动脉瓣 VTI）：</b>
+        <ol style="margin-left:18px;margin-top:4px;line-height:1.8;font-size:12px">
+          <li><b>位置：</b>探头放<b>心尖搏动处</b>（左锁骨中线第 4–5 肋间），标记点朝<b>左腋下</b></li>
+          <li><b>找图：</b>心尖四腔心（四个腔室都看到），然后把探头<b>向上翘 15°</b>，露出主动脉瓣 = 心尖五腔心</li>
+          <li><b>打 PW：</b>取样容积（小门）放在<b>主动脉瓣开口处</b>（刚过瓣叶，不要在左室里）</li>
+          <li><b>包络：</b>屏幕上出现一个<b>三角形频谱</b>（收缩期向上），用 trace 功能沿三角形上缘描一圈</li>
+          <li><b>读出 VTI：</b>机器自动给一个数字，单位 cm</li>
+        </ol>
+        <div class="do">
+          <b>判断：</b>
+          <ul style="margin-left:16px;margin-top:4px">
+            <li><b>SAVV ≥ 5–6 cm</b> = 每搏量正常</li>
+            <li><b>&lt; 4.5 cm</b> = 每搏量下降（不管 FS 好不好，都是低心排）</li>
+            <li>为什么必须看这个：低血容量时 FS 假性正常，但 SAVV 已经掉了</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="view">
+    <div class="view-head">6. PDA 彩色多普勒 <span class="when">胸骨上窝</span></div>
+    <div class="view-body">
+      <div class="view-img">
+        <img src="neonatal_shock_assets/8L4DyUqxSs.jpg" alt="suprasternal annotated" style="margin-bottom:6px">
+        <div class="cap">胸骨上窝切面：主动脉弓长轴，标注升主动脉/弓/降主动脉分支。</div>
+        <img src="neonatal_shock_assets/bkx0rHF7zk.jpg" alt="PDA color">
+        <div class="cap">26 周早产儿 PDA：红色射流从主动脉射入左肺动脉。</div>
+      </div>
+      <div class="view-txt">
+        <b>看四个数：</b>
+        <ul style="margin-left:18px;margin-top:4px">
+          <li>导管直径 &gt;1.5 mm = hsPDA</li>
+          <li>左向右分流 = 肺充血、体循环窃血</li>
+          <li>右向左分流 = PPHN</li>
+          <li>降主动脉舒张期反向血流 = 严重窃血</li>
+        </ul>
+        <div class="do"><b>体位：</b>胸骨上窝，声束指向主动脉弓长轴</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="view">
+    <div class="view-head">7. TR 连续波多普勒 <span class="when">估 PASP</span></div>
+    <div class="view-body">
+      <div class="view-img">
+        <img src="neonatal_shock_assets/TsS4ZfSxyV.jpg" alt="apical 4 chamber annotated" style="margin-bottom:6px">
+        <div class="cap">心尖四腔心：从心尖打，四个腔室都看到，TR 从这里打 CW。</div>
+        <img src="neonatal_shock_assets/whPGZStIAI.jpg" alt="TR CW">
+        <div class="cap">TR CW：v=3.52 m/s，4v²≈50，加 RAP 5 ≈ PASP 55。</div>
+      </div>
+      <div class="view-txt">
+        <b>手把手测 TR 速度：</b>
+        <ol style="margin-left:18px;margin-top:4px;line-height:1.8;font-size:12px">
+          <li><b>位置：</b>心尖四腔心（同 SAVV 那个位置）</li>
+          <li><b>找 TR：</b>打开<b>彩色多普勒</b>，三尖瓣口看到蓝色（或黄色）射流 = TR</li>
+          <li><b>打 CW：</b>把连续波取样线沿着这束射流的方向放，尽量平行</li>
+          <li><b>读速度：</b>屏幕上一个抛物线波形，量峰值速度 v（m/s）</li>
+        </ol>
+        <div class="do">
+          <b>怎么算 PASP：</b><br>
+          <b>PASP = 4 × v² + RAP</b><br>
+          例：v = 3.5 m/s → 4 × 3.5² = 4 × 12.25 = 49；RAP 估 5（正常）→ PASP ≈ 54 mmHg
+          <ul style="margin-left:16px;margin-top:6px">
+            <li><b>TR &lt; 2.5–3 m/s</b> = 正常</li>
+            <li><b>TR &gt; 3 m/s + D 字征</b> = PPHN</li>
+            <li><b>PAP/SAP ≥ 0.5</b>（PASP ÷ 收缩压 ≥ 0.5）= 肺压偏高</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="view">
+    <div class="view-head">8. 心包积液（红旗）<span class="when">看到立刻穿刺</span></div>
+    <div class="view-body">
+      <div class="view-img">
+        <img src="neonatal_shock_assets/aUEMrAcD7Q.jpg" alt="pericardial effusion">
+        <div class="cap">大量心包积液（白箭头）+ 右房舒张期塌陷（红箭头）= 填塞。</div>
+      </div>
+      <div class="view-txt">
+        <b>识别要点：</b>
+        <ul style="margin-left:18px;margin-top:4px">
+          <li>心外膜和心包之间一圈无回声（黑色）暗区</li>
+          <li>右房/右室舒张期塌陷 = 填塞（不是积液量的问题，是压不住了）</li>
+          <li>心脏在积液里摆动</li>
+        </ul>
+        <div class="do" style="color:var(--red)"><b>这不是加药能解决的：</b>立即心包穿刺，叫心外科/心超会诊。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 词典 -->
+  <div class="card dict" style="margin-top:14px">
+    <h3>心超名词对照（浅蓝=新生儿必看，浅红=成人不测）</h3>
+    <table>
+      <tr><th style="width:100px">缩写</th><th style="width:150px">英文</th><th>中文 / 大白话</th><th style="width:200px">新生儿正常 vs 成人</th></tr>
+
+      <tr class="cat"><td colspan="4">▎ 切面与测量工具</td></tr>
+      <tr><td class="en">PLAX</td><td>parasternal long-axis</td><td><b>胸骨旁长轴</b>，测 FS、LA/AO</td><td>—</td></tr>
+      <tr><td class="en">PSAX</td><td>parasternal short-axis</td><td><b>胸骨旁短轴</b>，看 D 字征</td><td>—</td></tr>
+      <tr><td class="en">A4C/A5C</td><td>apical 4-/5-chamber</td><td><b>心尖四腔/五腔</b>，测 SAVV、TR</td><td>—</td></tr>
+      <tr><td class="en">PW / CW</td><td>pulsed/continuous-wave Doppler</td><td><b>脉冲/连续波多普勒</b>，PW测VTI，CW测TR速度</td><td>—</td></tr>
+
+      <tr class="cat"><td colspan="4">▎ 收缩与流量 —— 新生儿必看</td></tr>
+      <tr class="newborn"><td class="en">FS</td><td>fractional shortening</td><td><b>短轴缩短率</b>=(LVIDd−LVIDs)/LVIDd</td><td><b>新生儿 28–38%</b>；成人 25–45%。低血容量时假性正常</td></tr>
+      <tr class="newborn"><td class="en">VTI</td><td>velocity-time integral</td><td><b>速度时间积分</b>，多普勒包络下面积=一次心跳血流走的距离</td><td>SV = 瓣环面积 × VTI</td></tr>
+      <tr class="newborn"><td class="en">SAVV</td><td>aortic valve VTI</td><td><b>主动脉瓣 VTI</b>，最直接每搏量</td><td><b>新生儿 ≥5–6 cm</b>；成人 18–22 cm（差3-4倍，别套成人）</td></tr>
+      <tr class="newborn"><td class="en">RVO/LVO</td><td>right/left ventricular output</td><td><b>右/左室输出量</b>=SV×HR</td><td><b>新生儿 mL/kg/min</b>；成人 L/min/m²（单位不同）</td></tr>
+      <tr class="newborn"><td class="en">SVC flow</td><td>superior vena cava flow</td><td><b>上腔静脉血流</b>，代表脑+上半身灌注</td><td><b>新生儿 &gt;55</b>；成人不测。PDA时LVO骗人，看SVC</td></tr>
+      <tr class="adult"><td class="en">EF</td><td>ejection fraction</td><td><b>射血分数</b>（Simpson）</td><td>成人核心（&lt;55%心衰）；<b>新生儿不推荐</b>——几何不规则测不准</td></tr>
+      <tr class="adult"><td class="en">IVC 变异</td><td>IVC respiratory variation</td><td><b>下腔静脉呼吸变异度</b></td><td>成人 &gt;50%=低血容量；<b>新生儿不可靠</b>（PDA/肺/通气影响）</td></tr>
+
+      <tr class="cat"><td colspan="4">▎ 压力与分流 —— 新生儿必看</td></tr>
+      <tr class="newborn"><td class="en">TR</td><td>tricuspid regurgitation</td><td><b>三尖瓣反流</b>，速度越快右室后压越高</td><td><b>新生儿 &lt;2.5–3 m/s</b>；生后几天生理性偏高，结合D字征</td></tr>
+      <tr class="newborn"><td class="en">PASP</td><td>pulmonary artery systolic pressure</td><td><b>肺动脉收缩压</b>=4v²+RAP</td><td><b>新生儿用PAP/SAP&lt;0.5比值</b>；成人用mPAP&gt;20绝对值</td></tr>
+      <tr class="newborn"><td class="en">D-sign</td><td>D-shaped septum</td><td><b>D字征</b>，LV被压成D形=PPHN</td><td>新生儿PPHN；成人急性肺栓塞</td></tr>
+      <tr class="newborn"><td class="en">PDA</td><td>patent ductus arteriosus</td><td><b>动脉导管未闭</b></td><td>早产儿常见；成人罕见</td></tr>
+      <tr class="newborn"><td class="en">LA/AO</td><td>LA/aortic root ratio</td><td><b>左房/主动脉根比</b></td><td><b>新生儿 &lt;1.3</b>；成人不测（PDA是早产儿病）</td></tr>
+      <tr class="adult"><td class="en">E/e'</td><td>mitral/annular ratio</td><td><b>左室充盈压</b>，成人舒张功能</td><td>成人常用；<b>新生儿不测</b>——参考值未建立</td></tr>
+
+      <tr class="cat"><td colspan="4">▎ 临床</td></tr>
+      <tr><td class="en">MAP</td><td>mean arterial pressure</td><td><b>平均动脉压</b></td><td>新生儿 ≥胎龄周数；成人 ≥65</td></tr>
+      <tr><td class="en">HR</td><td>heart rate</td><td><b>心率</b></td><td>新生儿 120–160；成人 60–100</td></tr>
+      <tr><td class="en">PPHN</td><td>persistent PHN</td><td><b>新生儿持续肺动脉高压</b></td><td>新生儿特有</td></tr>
+      <tr><td class="en">iNO</td><td>inhaled nitric oxide</td><td><b>吸入NO</b>，PPHN靶向药</td><td>新生儿一线</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h3>高频坑</h3>
+    <ul class="pit-list">
+      <li><b>只盯血压：</b>MAP ≥ GA ≠ 灌注足够；ELBW 正常 MAP 仍可 SVC 低流量</li>
+      <li><b>"肾剂量多巴胺"：</b>新生儿 5 μg/kg/min 已出 α 效应，不存在</li>
+      <li><b>多巴酚丁胺升 BP：</b>它改流量不改压力，BP 不升但 CO 上去就是有效</li>
+      <li><b>米力农当急救药：</b>起效 30–60 min，BP 低时禁用</li>
+      <li><b>激素常规加：</b>治疗前皮质醇&gt;15 者加激素死亡 OR 26.3（Peeples 2017）</li>
+      <li><b>照搬 PICU 剂量：</b>去甲肾 0.05–0.5，不是 2</li>
+      <li><b>忽视可逆因素：</b>pH&lt;7.2、离子钙&lt;1.0、低糖、低温未纠正，药无效</li>
+    </ul>
+  </div>
+<div class="pager"><a href="drug.html">← 上一页<small>③药物</small></a><a href="lit.html">下一页 →<small>⑤文献</small></a></div>
+<footer>
+
+新生儿休克与血管活性药物床旁手册 · 剂量均为新生儿文献范围<br>
+ASE 2024 / Rotunda (El-Khuffash) / NeoReviews PPHN / 中华2025 PDA共识
+<br>
+分区翻页版 · 2026-09-27 · <a href="allinone.html" style="color:var(--primary)">单页完整版（长滚动）</a> · <a href="https://github.com/caresseww/neonatal-shock-manual" style="color:var(--primary)">源码</a>
+</footer>
+</div>
+
+<style>
+/* ==== shared mobile/paging overrides ==== */
+*{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.tab-content{display:block!important}
+body{font-size:14.5px}
+.wrap{max-width:640px;padding:10px}
+header{padding:16px;border-radius:10px}
+header h1{font-size:17px;line-height:1.45}
+header .sub{font-size:11.5px}
+.card{padding:13px;border-radius:10px}
+.decision{padding:14px;border-radius:10px}
+.grid2{grid-template-columns:1fr!important}
+.grid4{grid-template-columns:1fr 1fr!important}
+.branches{grid-template-columns:1fr!important}
+.view-body{grid-template-columns:1fr!important}
+.view-img{border-right:none;border-bottom:1px solid var(--border)}
+table{font-size:12px}
+th,td{padding:6px 7px}
+table.tight,table.tight td,table.tight th{font-size:10.5px;padding:5px 3px}
+.mcard{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--primary);border-radius:9px;padding:10px 12px;margin:0 0 10px}
+.mcard.newborn{background:var(--pl)}
+.mcard.adult{background:var(--rl)}
+.mcard-t{font-weight:700;color:var(--primary);font-size:14px;margin-bottom:6px;padding-bottom:5px;border-bottom:1px dashed var(--border)}
+.mcard-r{display:grid;grid-template-columns:76px 1fr;gap:2px 8px;font-size:12.5px;line-height:1.6;margin:3px 0}
+.mcard-r .mk{color:var(--muted);font-weight:600;font-size:11.5px;padding-top:1px}
+.mcard-div{font-weight:700;color:var(--muted);font-size:12px;margin:12px 0 6px}
+.mnav{position:sticky;top:0;z-index:200;display:flex;gap:4px;background:#fff;border-radius:10px;padding:5px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin:0 0 12px}
+.mnav a{flex:1;padding:9px 2px;text-align:center;text-decoration:none;font-size:11.5px;color:var(--muted);border-radius:7px;font-weight:600;white-space:nowrap}
+.mnav a.active{background:var(--primary);color:#fff}
+.pager{display:flex;gap:8px;margin:18px 0 2px}
+.pager a{flex:1;text-align:center;padding:12px 8px;background:var(--card);border:1px solid var(--border);border-radius:9px;text-decoration:none;font-size:12.5px;color:var(--primary);font-weight:600;line-height:1.4}
+.pager a small{display:block;color:var(--muted);font-weight:400;font-size:10.5px;margin-top:2px}
+.card,.drug,.view,.mcard,.num,.decision,.step,.redflag,.tip{break-inside:avoid}
+@media print{.wrap{max-width:100%;padding:0 2px}.card,.decision{break-inside:auto}.mnav,.pager{display:none}}
+</style>
+
+
+<script>
+(function(){
+  document.querySelectorAll('div[style]').forEach(function(d){
+    var st=d.getAttribute('style')||'';
+    if(st.indexOf('grid-template-columns')>=0&&(st.indexOf('1fr 1fr')>=0||st.indexOf('repeat(')>=0)) d.style.gridTemplateColumns='1fr';
+    if(st.indexOf('margin:6px 0 0 32px')>=0) d.style.margin='6px 0 0 0';
+  });
+  function shorten(k){return k.replace('（为什么会这样）','').replace('新生儿正常 vs 成人','新生儿vs成人').replace('中文 / 大白话','中文');}
+  function mkcard(title,fields,cls){
+    var c=document.createElement('div');c.className='mcard'+(cls?' '+cls:'');
+    var t=document.createElement('div');t.className='mcard-t';t.innerHTML=title;c.appendChild(t);
+    fields.forEach(function(f){
+      if(!f.v||!String(f.v).trim())return;
+      var r=document.createElement('div');r.className='mcard-r';
+      r.innerHTML='<span class="mk">'+shorten(f.k)+'</span><span class="mv">'+f.v+'</span>';
+      c.appendChild(r);
+    });
+    return c;
+  }
+  [].slice.call(document.querySelectorAll('table')).forEach(function(tb){
+    if(!tb.rows.length)return;
+    var h=tb.rows[0].cells;if(!h.length)return;
+    var key0=h[0].textContent.trim(),n=h.length;
+    if(key0===''&&n===6){
+      var wrap=document.createElement('div');
+      var labels=[].slice.call(tb.rows).slice(1).map(function(r){return r.cells[0].innerHTML;});
+      for(var j=1;j<n;j++){
+        var fields=labels.map(function(lab,i){return {k:lab,v:tb.rows[i+1].cells[j].innerHTML};});
+        wrap.appendChild(mkcard(tb.rows[0].cells[j].innerHTML,fields,''));
+      }
+      tb.parentNode.replaceChild(wrap,tb);return;
+    }
+    var doCard=(key0==='类型')||(key0==='受体')||(key0==='临床表现')||(key0==='缩写');
+    if(doCard){
+      var wrap2=document.createElement('div');
+      var heads=[].slice.call(h).map(function(c){return c.textContent.trim();});
+      [].slice.call(tb.rows).slice(1).forEach(function(r){
+        if(r.cells.length===1){var d=document.createElement('div');d.className='mcard-div';d.textContent=r.cells[0].textContent.replace('▎','').trim();wrap2.appendChild(d);return;}
+        var fields=[];for(var i2=1;i2<r.cells.length;i2++)fields.push({k:heads[i2],v:r.cells[i2].innerHTML});
+        var cls=r.classList.contains('newborn')?'newborn':(r.classList.contains('adult')?'adult':'');
+        wrap2.appendChild(mkcard(r.cells[0].innerHTML,fields,cls));
+      });
+      tb.parentNode.replaceChild(wrap2,tb);return;
+    }
+    if((key0==='药物'&&n>=7)||(key0==='资源')) tb.classList.add('tight');
+  });
+})();
+</script>
+
+</body>
+</html>

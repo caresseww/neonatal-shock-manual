@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>新生儿休克与血管活性药物 · 床旁手册</title>
+<title>② 值班决策｜床旁鉴别与心超四步</title>
 <style>
   :root{
     --bg:#f5f7fa;--card:#fff;--border:#e2e8f0;--text:#1a2536;--muted:#64748b;
@@ -126,43 +126,189 @@
 </head>
 <body>
 <div class="wrap">
-<nav class="mnav"><a href="index.html" class="active">首页</a><a href="basic.html">①概念</a><a href="decide.html">②决策</a><a href="drug.html">③药物</a><a href="echo.html">④心超</a><a href="lit.html">⑤文献</a><a href="resources.html">⑥资源</a></nav>
+<nav class="mnav"><a href="index.html">首页</a><a href="basic.html">①概念</a><a href="decide.html" class="active">②决策</a><a href="drug.html">③药物</a><a href="echo.html">④心超</a><a href="lit.html">⑤文献</a><a href="resources.html">⑥资源</a></nav>
 <header>
-  <h1>新生儿休克与血管活性药物 · 床旁手册</h1>
-  <div class="sub">复旦儿科 NICU · 分区翻页版 · 微信点开即看 · 36min POCUS 视频在内 · 收藏本页当目录</div>
+  <h1>② 值班决策｜床旁鉴别与心超四步</h1>
+  <div class="sub">先看病人 → 五种表型临床鉴别 → 五步心超流程 → 红旗体征</div>
 </header>
-<style>.toc{display:block;background:var(--pl);border:1px solid #c5d8e8;border-radius:9px;padding:11px 12px;text-decoration:none;color:var(--text);font-size:13px;line-height:1.5}.toc small{display:block;color:var(--muted);font-size:11px;margin-top:3px}.toc:active{background:#dce8f3}</style>
-  <div class="tip">
-    <b>怎么用：</b>值班遇到低血压 → 直接进 <a href="decide.html" style="color:var(--primary)"><b>② 值班决策</b></a>；想系统学 → 按①→⑥顺序；药剂量拿不准 → <a href="drug.html" style="color:var(--primary)"><b>③ 药物</b></a>药卡。每页顶部可跳转分区，页底有上一页/下一页。
-  </div>
+
+<div id="decide" class="tab-content">
+
   <div class="card">
-    <h3>目录（六个分区）</h3>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-      <a href="basic.html" class="toc"><b>① 基本概念</b><small>循环5特点 · 休克五型 · 核心数字</small></a>
-      <a href="decide.html" class="toc"><b>② 值班决策</b><small>表型鉴别 · 心超四步 · 红旗</small></a>
-      <a href="drug.html" class="toc"><b>③ 药物</b><small>受体 · 矩阵 · 7张药卡 · 路径</small></a>
-      <a href="echo.html" class="toc"><b>④ 心超手把手</b><small>视频课 · 8切面 · 词典 · 坑</small></a>
-      <a href="lit.html" class="toc"><b>⑤ 文献速查</b><small>关键研究一句话</small></a>
-      <a href="resources.html" class="toc"><b>⑥ 学习资源</b><small>课程 · 视频 · 指南共识</small></a>
+    <h3>先看病人，再看心超：四种表型临床一眼鉴别</h3>
+    <table>
+      <tr><th style="width:80px"></th><th>低血容量</th><th>心源性</th><th>分布性（早期）</th><th>PDA 窃血</th><th>PPHN</th></tr>
+      <tr><td><b>面色</b></td><td>苍白</td><td>苍白/发灰</td><td>可潮红</td><td>苍白</td><td>中央发绀</td></tr>
+      <tr><td><b>CRT</b></td><td>↑↑</td><td>↑↑</td><td>早期可正常</td><td>↑</td><td>↑</td></tr>
+      <tr><td><b>四肢温度</b></td><td>凉</td><td>凉</td><td><b>温暖（高动力）</b></td><td>凉</td><td>凉</td></tr>
+      <tr><td><b>HR</b></td><td>代偿↑</td><td>可快可慢（窒息后慢）</td><td>↑</td><td>↑</td><td>↑</td></tr>
+      <tr><td><b>脉压差</b></td><td>正常/窄</td><td>窄</td><td><b>宽</b></td><td><b>宽、bounding pulse</b></td><td>窄</td></tr>
+      <tr><td><b>SpO₂</b></td><td>正常</td><td>可低</td><td>正常</td><td>正常</td><td><b>难维持，导管前后差&gt;10%</b></td></tr>
+      <tr><td><b>尿量</b></td><td>↓↓</td><td>↓</td><td>早期可正常</td><td>↓</td><td>↓</td></tr>
+      <tr><td><b>肝脏</b></td><td>不大</td><td><b>可大</b></td><td>不大</td><td>可大</td><td>可大</td></tr>
+      <tr><td><b>乳酸</b></td><td>↑</td><td>↑↑</td><td>↑</td><td>可↑</td><td>↑</td></tr>
+      <tr style="background:#eef3f9"><td><b>心超重点看</b></td><td>两室小、收缩期闭合、SVC弱、IVC扁</td><td>FS&lt;28%、SAVV&lt;4.5cm、Tei&gt;0.4、两室运动弱</td><td>心功能好、FS正常、两室大小正常（排除PDA后才是这个）</td><td>LA/AO&gt;1.3、导管&gt;1.5mm、降主动脉舒张期反向血流</td><td>D字征、TR&gt;3m/s、PAP/SAP≥0.5、右向左分流</td></tr>
+      <tr style="background:var(--pl)"><td><b>首选</b></td><td>补液</td><td>多巴酚丁胺/肾上腺素</td><td>多巴胺→激素→去甲肾</td><td>限液+关PDA</td><td>iNO+去甲肾</td></tr>
+    </table>
+    <div style="font-size:12px;color:var(--muted);margin-top:10px;line-height:1.7;padding:10px;background:#fff8e6;border-radius:6px;border-left:3px solid #a85a14">
+      <b style="color:#a85a14">⚠ 临床只能粗筛，不能确诊：</b><br>
+      低血容量和心源性早期都<b>四肢凉+CRT↑</b>；分布性和PDA都<b>脉压宽</b>；光靠病人外表分不开。
+      下表只是帮你<b>带着问题去打心超</b>——看到四肢暖+脉压宽，重点查PDA；看到发绀+导管前后差，重点查PPHN。<b>最终诊断必须靠心超。</b>
     </div>
-  </div>
-  <div class="card">
-    <h3>核心数字（门槛，不是目标）</h3>
-    <div class="grid4">
-      <div class="num"><div class="big">MAP ≥ GA</div><div class="lbl">平均动脉压 ≥ 胎龄周数</div></div>
-      <div class="num"><div class="big" style="color:var(--red)">SVC &lt;55</div><div class="lbl">mL/kg/min = 脑灌注不足</div></div>
-      <div class="num"><div class="big" style="color:var(--red)">FS &lt;28%</div><div class="lbl">或 SAVV&lt;4.5cm = 低心排</div></div>
-      <div class="num"><div class="big" style="color:var(--red)">TR &gt;3</div><div class="lbl">m/s + D字征 = PPHN</div></div>
-    </div>
-    <div style="font-size:11.5px;color:var(--muted);text-align:center;margin-top:8px">
-      真正目标：CRT&lt;3s · 乳酸正常 · 尿量&gt;1 mL/kg/h · 四肢温暖
-    </div>
-  </div>
-  <div class="tip red">
-    <b>最重要的一句话：</b>MAP ≥ GA ≠ 灌注足够。先看流量，再看压力（Seri 2004）。
   </div>
 
-<div class="pager"><a href="index.html">← 封面<small>首页</small></a><a href="basic.html">下一页 →<small>①概念</small></a></div>
+  <div class="card" style="background:var(--pl);border-color:#c5d8e8">
+    <h3 style="color:var(--primary)">口诀：看到什么 → 心超先查什么</h3>
+    <table style="font-size:12.5px">
+      <tr style="background:var(--primary);color:#fff"><th style="width:35%">临床表现</th><th style="width:30%">最可能</th><th>心超重点看</th></tr>
+      <tr>
+        <td><b>四肢凉 + CRT↑ + 苍白 + HR代偿快</b></td>
+        <td>低血容量 或 心源性</td>
+        <td>先看<b>两室大小</b>：小而收缩过度=低血容量；大小正常但运动弱=心源性。再看FS/SAVV</td>
+      </tr>
+      <tr>
+        <td><b>四肢暖 + 脉压宽 + CRT正常</b></td>
+        <td>分布性（血管扩张）</td>
+        <td>心功能应该好；如果FS好但BP低→缩血管。<b>但要先排除PDA</b>（也是脉压宽）</td>
+      </tr>
+      <tr>
+        <td><b>脉压宽 + bounding pulse + 肺充血 + 舒张压低</b></td>
+        <td>PDA 窃血</td>
+        <td>胸骨上窝彩色多普勒看导管直径；PLAX测<b>LA/AO</b>（>1.3）；降主动脉舒张期反向血流</td>
+      </tr>
+      <tr>
+        <td><b>中央发绀 + SpO₂难维持 + 导管前后差&gt;10%</b></td>
+        <td>PPHN</td>
+        <td>PSAX看<b>D字征</b>；心尖四腔打<b>TR CW</b>（>3 m/s）；PDA分流方向</td>
+      </tr>
+      <tr>
+        <td><b>肝大 + 肺啰音 + 补液后BP不升</b></td>
+        <td>心源性</td>
+        <td>PLAX测<b>FS&lt;28%</b>；心尖五腔测<b>SAVV&lt;4.5cm</b>；Tei指数</td>
+      </tr>
+      <tr>
+        <td><b>BP骤降 + 心音低 + 奇脉</b></td>
+        <td>心包填塞</td>
+        <td>剑突下四腔心看<b>心包无回声暗区 + 右房舒张期塌陷</b>→立即穿刺</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="decision">
+    <div class="qnode">MAP（平均动脉压）低于胎龄周数 / 灌注差 / CRT&gt;3s / 乳酸高</div>
+    <div class="arrow">↓</div>
+
+    <!-- 第1步 -->
+    <div class="step" style="background:var(--pl)">
+      <div class="n">1</div>
+      <div><b>剑突下四腔心</b>（探头放剑突下，声束指向左肩）<br>
+        <small>同时回答三个问题：</small></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:6px 0 0 32px">
+      <div style="background:#eef3f9;padding:8px;border-radius:6px;font-size:11.5px;border-left:3px solid var(--primary)">
+        <b>两室都很小、收缩期贴一起？</b><br>
+        → <b>低血容量</b><br>
+        直接处理：10–20 mL/kg 晶体，10–20min输完复查
+      </div>
+      <div style="background:#fdecea;padding:8px;border-radius:6px;font-size:11.5px;border-left:3px solid var(--red)">
+        <b style="color:var(--red)">心外一圈黑水（心包积液）？</b><br>
+        → <b>红旗：填塞</b><br>
+        直接处理：立即穿刺，叫会诊
+      </div>
+      <div style="background:#f5f7fa;padding:8px;border-radius:6px;font-size:11.5px;color:var(--muted)">
+        <b>都不是？</b> → 继续 ↓
+      </div>
+    </div>
+    <div class="arrow">↓ 继续</div>
+
+    <!-- 第2步 -->
+    <div class="step" style="background:var(--pl)">
+      <div class="n">2</div>
+      <div><b>PLAX 测 FS（短轴缩短率）</b><br>
+        <small>左胸骨旁3–4肋间，M模式放二尖瓣腱索水平</small></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 0 32px">
+      <div style="background:#eef3f9;padding:8px;border-radius:6px;font-size:11.5px;border-left:3px solid var(--primary)">
+        <b>FS &lt; 28%（或 SAVV &lt; 4.5 cm）？</b><br>
+        → <b>心源性/泵没劲</b><br>
+        处理：纠酸补钙补糖；多巴酚丁胺 5–10；BP同时低→肾上腺素 0.05
+      </div>
+      <div style="background:#f5f7fa;padding:8px;border-radius:6px;font-size:11.5px;color:var(--muted)">
+        <b>FS 28–38% 正常？</b> → 继续 ↓
+      </div>
+    </div>
+    <div class="arrow">↓ 继续</div>
+
+    <!-- 第3步 -->
+    <div class="step" style="background:var(--pl)">
+      <div class="n">3</div>
+      <div><b>PSAX 看室间隔形状</b><br>
+        <small>同PLAX位置转90°，LV横切面</small></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 0 32px">
+      <div style="background:#eef3f9;padding:8px;border-radius:6px;font-size:11.5px;border-left:3px solid var(--primary)">
+        <b>LV 变 D 形（D字征）？</b><br>
+        → <b>PPHN（右心被肺压堵了）</b><br>
+        继续第4步确认TR
+      </div>
+      <div style="background:#f5f7fa;padding:8px;border-radius:6px;font-size:11.5px;color:var(--muted)">
+        <b>LV 圆形、室间隔居中？</b> → 继续 ↓
+      </div>
+    </div>
+    <div class="arrow">↓ 继续</div>
+
+    <!-- 第4步 -->
+    <div class="step" style="background:var(--pl)">
+      <div class="n">4</div>
+      <div><b>LA/AO + 胸骨上窝看 PDA</b><br>
+        <small>PLAX上测LA/AO比；胸骨上窝打主动脉弓长轴+彩色多普勒</small></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 0 32px">
+      <div style="background:#eef3f9;padding:8px;border-radius:6px;font-size:11.5px;border-left:3px solid var(--primary)">
+        <b>LA/AO &gt; 1.3 或 PDA &gt;1.5mm？</b><br>
+        → <b>PDA 窃血（血被分流偷走）</b><br>
+        处理：限液80–100；布洛芬/对乙酰氨基酚；顽固BP低→去甲肾
+      </div>
+      <div style="background:#f5f7fa;padding:8px;border-radius:6px;font-size:11.5px;color:var(--muted)">
+        <b>LA/AO &lt;1.3、无大PDA？</b> → 继续 ↓
+      </div>
+    </div>
+    <div class="arrow">↓ 继续</div>
+
+    <!-- 第5步 -->
+    <div class="step" style="background:var(--pl)">
+      <div class="n">5</div>
+      <div><b>心尖四腔心打 TR 连续波（CW）</b><br>
+        <small>测三尖瓣反流峰值速度，PASP = 4v² + RAP</small></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 0 32px">
+      <div style="background:#eef3f9;padding:8px;border-radius:6px;font-size:11.5px;border-left:3px solid var(--primary)">
+        <b>TR &gt; 3 m/s + 第3步D字征？</b><br>
+        → <b>PPHN 确诊</b><br>
+        处理：iNO 5–20ppm + 去甲肾 0.05–0.5
+      </div>
+      <div style="background:#f5f7fa;padding:8px;border-radius:6px;font-size:11.5px;color:var(--muted)">
+        <b>TR &lt;2.5、心超都正常？</b><br>
+        → <b>分布性休克（血管扩张）</b>　处理：多巴胺 5 μg/kg/min 起
+      </div>
+    </div>
+  </div>
+
+  <div class="grid4" style="margin-top:14px">
+    <div class="num"><div class="big">MAP ≥ GA</div><div class="lbl">平均动脉压 ≥ 胎龄周数<br>24h 可接受下限</div></div>
+    <div class="num"><div class="big" style="color:var(--red)">SVC &lt;55</div><div class="lbl">上腔静脉血流 mL/kg/min<br>= 脑灌注不足</div></div>
+    <div class="num"><div class="big" style="color:var(--red)">FS &lt;28%</div><div class="lbl">短轴缩短率（或 SAVV&lt;4.5cm）<br>= 低心排</div></div>
+    <div class="num"><div class="big" style="color:var(--red)">TR &gt;3</div><div class="lbl">三尖瓣反流速度 m/s<br>+ D字征 = PPHN</div></div>
+  </div>
+
+  <div class="redflag">
+    <b>看到立刻叫会诊：</b>心包积液+右房塌陷 → 立即穿刺；四腔心严重不对称疑先心（HLH、TGA）；持续心律异常；图像看不清不要硬猜。
+  </div>
+
+  <div class="tip red" style="margin-top:12px">
+    <b>最常犯的错：</b>不问清楚就上多巴胺。低血容量时升压药=把血管掐死，器官更缺血；PDA 时加升压药=更多血漏到肺里。
+  </div>
+<div class="pager"><a href="basic.html">← 上一页<small>①概念</small></a><a href="drug.html">下一页 →<small>③药物</small></a></div>
 <footer>
 
 新生儿休克与血管活性药物床旁手册 · 剂量均为新生儿文献范围<br>
